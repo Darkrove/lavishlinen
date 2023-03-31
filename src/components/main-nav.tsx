@@ -5,6 +5,8 @@ import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { FC } from "react";
 import { Icons } from "@/components/icons";
+import { MobileNav } from "@/components/mobile-nav";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -101,12 +103,16 @@ const Navbar: FC<NavbarProps> = ({}) => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
+
         <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
+          <MobileNav />
           <div className="flex items-center space-x-1">
             <Button variant="ghost">
               <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
             </Button>
-            <ModeToggle />
+            <div className="hidden lg:flex">
+              <ModeToggle />
+            </div>
             <Button>Sign in</Button>
           </div>
         </div>
