@@ -52,6 +52,7 @@ export function MobileNav() {
                 </DropdownMenuItem>
               )
           )}
+          <DropdownMenuSeparator className="-mx-2" />
           {docsConfig.sidebarNav.map((item, index) => (
             <DropdownMenuGroup key={index}>
               <DropdownMenuSeparator
