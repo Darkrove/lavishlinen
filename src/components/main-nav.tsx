@@ -40,12 +40,6 @@ const components: { title: string; href: string; description: string }[] = [
     href: "/",
     description: "Pure linen half sleeve shirt for mens.",
   },
-
-  {
-    title: "Pure Linen Pants",
-    href: "",
-    description: "Pure linen pants for mens.",
-  },
 ];
 
 interface NavbarProps {}
@@ -106,13 +100,10 @@ const Navbar: FC<NavbarProps> = ({}) => {
 
         <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
           <MobileNav />
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-2">
             <Button variant="ghost">
               <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
             </Button>
-            <div className="hidden lg:flex">
-              <ModeToggle />
-            </div>
             <Button>Sign in</Button>
           </div>
         </div>

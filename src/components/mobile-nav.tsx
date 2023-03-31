@@ -66,7 +66,13 @@ export function MobileNav() {
                 item.items.map((item) => (
                   <DropdownMenuItem key={item.title} asChild>
                     {item.href ? (
-                      <Link href={item.href}>{item.title}</Link>
+                      <Link
+                        href={item.href}
+                        target={item.external ? "_blank" : ""}
+                        rel={item.external ? "noreferrer" : ""}
+                      >
+                        {item.title}
+                      </Link>
                     ) : (
                       item.title
                     )}

@@ -47,8 +47,8 @@ export const docsConfig: DocsConfig = {
           items: [],
         },
         {
-          title: "Twitter",
-          href: "https://twitter.com/lavishlinen",
+          title: "Faecbook",
+          href: "https://www.facebook.com/people/lavish_linen_/100089931697810/",
           external: true,
           items: [],
         },
