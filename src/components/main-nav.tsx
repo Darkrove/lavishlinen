@@ -53,7 +53,7 @@ interface NavbarProps {}
 const Navbar: FC<NavbarProps> = ({}) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-b-stone-200 bg-white dark:border-b-stone-700 dark:bg-stone-900">
-      <div className="h-16 px-10 container max-w-7xl mx-auto w-full flex justify-between items-center">
+      <div className="h-16 px-5 md:px-10 container max-w-7xl mx-auto w-full flex justify-between items-center">
         <div className="hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Icons.logo className="h-6 w-6" />
