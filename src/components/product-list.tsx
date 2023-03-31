@@ -81,13 +81,9 @@ const ProductList: FC<ProductListProps> = ({}) => {
       <Separator className="my-4" />
       <LargeHeading size="sm">Experience the Luxury</LargeHeading>
       <Separator className="my-4" />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between">
         {listenNowAlbums.map((album) => (
-          <AlbumArtwork
-            key={album.name}
-            album={album}
-            className="w-[150px] md:w-[250px]"
-          />
+          <AlbumArtwork key={album.name} album={album} className="w-full" />
         ))}
       </div>
       <div className="flex w-full justify-center items-center my-6">

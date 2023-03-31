@@ -30,13 +30,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="light">
-            <div className="flex min-h-screen flex-col">
-              <Navbar />
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
 
-              <div>{children}</div>
-            </div>
-          </ThemeProvider>
+            <div>{children}</div>
+          </div>
         </body>
       </html>
     </>
