@@ -33,7 +33,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="flex min-h-screen flex-col">
               <Navbar />
-              <div className="container flex-1">{children}</div>
+              <div>{children}</div>
             </div>
           </ThemeProvider>
         </body>

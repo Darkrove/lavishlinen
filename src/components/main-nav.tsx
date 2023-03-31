@@ -104,7 +104,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
           <div className="flex items-center space-x-1">
             <Button variant="ghost">
-              <Icons.shoppingCart className="h-5 w-5" />
+              <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
             </Button>
             <ModeToggle />
             <Button>Sign in</Button>
