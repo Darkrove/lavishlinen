@@ -1,10 +1,10 @@
 import { FC } from "react";
 
-interface BatchProps {
+interface BadgeProps {
   children: React.ReactNode;
 }
 
-const Batch: FC<BatchProps> = ({ children }) => {
+const Badge: FC<BadgeProps> = ({ children }) => {
   return (
     <span className="rounded-md bg-teal-100 px-1.5 py-0.5 text-xs no-underline group-hover:no-underline dark:text-slate-900">
       {children}
@@ -12,4 +12,4 @@ const Batch: FC<BatchProps> = ({ children }) => {
   );
 };
 
-export default Batch;
+export default Badge;
