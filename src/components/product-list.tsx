@@ -11,6 +11,7 @@ interface Product {
   name: string;
   price: string;
   cover: string;
+  sale?: boolean;
 }
 
 const productList: Product[] = [
