@@ -22,21 +22,31 @@ const ProductCard: FC<ProductCardProps> = ({
   ...props
 }) => {
   return (
-    <div className={cn("mb-4 space-y-3", className)} {...props}>
-      <AspectRatio ratio={aspectRatio} className="overflow-hidden rounded-md">
+    <div
+      className={cn("bg-[#fbf7f5] rounded-md shadow-md", className)}
+      {...props}
+    >
+      <AspectRatio
+        ratio={aspectRatio}
+        className="relative overflow-hidden rounded-t-md"
+      >
         <Image
           src={product.cover}
           alt={product.name}
           fill
           className="object-cover transition-all hover:scale-105"
         />
+        {product.sale && (
+          <div className="absolute top-0 left-0 mt-2 ml-2">
+            <Badge variant="destructive" size="md">
+              Sale
+            </Badge>
+          </div>
+        )}
       </AspectRatio>
-      <Badge variant="destructive">Sale</Badge>
-      <div className="space-y-1 text-sm">
-        <h3 className="font-medium leading-none">{product.name}</h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          {product.price}
-        </p>
+      <div className="space-y-1 text-sm font-sans p-4">
+        <h3 className="font-bold leading-tight">{product.name}</h3>
+        <p className="text-xs text-gray-500">{product.price}</p>
       </div>
     </div>
   );

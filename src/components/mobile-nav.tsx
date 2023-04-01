@@ -75,7 +75,9 @@ export function MobileNav() {
                       >
                         {item.title}
                         {item.label && (
-                          <Badge variant="info">{item.label}</Badge>
+                          <Badge variant="info" size="sm">
+                            {item.label}
+                          </Badge>
                         )}
                       </Link>
                     ) : (

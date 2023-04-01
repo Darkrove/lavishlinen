@@ -18,6 +18,7 @@ const productList: Product[] = [
     name: "Powder Blue - Pure Linen slim fit Full  Sleeve Shirt",
     price: "Rs. 1890.00",
     cover: "/products/ASP_8573.jpg",
+    sale: true,
   },
   {
     name: "Deep Green - Pure Linen slim fit Full  Sleeve Shirt",
@@ -28,6 +29,7 @@ const productList: Product[] = [
     name: "Rust Orange - Pure Linen slim fit Full  Sleeve Shirt",
     price: "Rs. 1890.00",
     cover: "/products/ASP_8598.jpg",
+    sale: true,
   },
   {
     name: "Cornflower Blue - Pure Linen slim fit Full Sleeve Shirt",
@@ -38,6 +40,7 @@ const productList: Product[] = [
     name: "Navy Blue - Pure Linen slim fit Full  Sleeve Shirt",
     price: "Rs. 1890.00",
     cover: "/products/ASP_8630.jpg",
+    sale: true,
   },
   {
     name: "Blue Floral digital print - Pure Linen slim fit Full  Sleeve Shirt",
