@@ -16,6 +16,7 @@ import {
   Loader2,
   LucideProps,
   Moon,
+  Menu,
   MoreVertical,
   Pizza,
   Plus,
@@ -32,6 +33,7 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
+
   logo: (props: LucideProps) => (
     <svg
       viewBox="0 0 24 24"
@@ -61,6 +63,7 @@ export const Icons = {
   user: User,
   arrowRight: ArrowRight,
   help: HelpCircle,
+  menu: Menu,
   pizza: Pizza,
   twitter: Twitter,
   check: Check,
