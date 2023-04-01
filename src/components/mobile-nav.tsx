@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Badge from "./ui/badge";
 
 export function MobileNav() {
   return (
@@ -70,8 +71,12 @@ export function MobileNav() {
                         href={item.href}
                         target={item.external ? "_blank" : ""}
                         rel={item.external ? "noreferrer" : ""}
+                        className="flex justify-between items-center"
                       >
                         {item.title}
+                        {item.label && (
+                          <Badge variant="info">{item.label}</Badge>
+                        )}
                       </Link>
                     ) : (
                       item.title

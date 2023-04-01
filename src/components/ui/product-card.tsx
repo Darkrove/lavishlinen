@@ -31,7 +31,7 @@ const ProductCard: FC<ProductCardProps> = ({
           className="object-cover transition-all hover:scale-105"
         />
       </AspectRatio>
-      <Badge>Sale</Badge>
+      <Badge variant="destructive">Sale</Badge>
       <div className="space-y-1 text-sm">
         <h3 className="font-medium leading-none">{product.name}</h3>
         <p className="text-xs text-slate-500 dark:text-slate-400">

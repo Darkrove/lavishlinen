@@ -34,7 +34,7 @@ export const docsConfig: DocsConfig = {
           href: "/",
           items: [],
         },
-        { title: "Half Sleeve Shirts", href: "/", items: [] },
+        { title: "Half Sleeve Shirts", href: "/", items: [], label: "New" },
       ],
     },
     {
