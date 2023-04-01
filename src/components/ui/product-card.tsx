@@ -1,8 +1,10 @@
 import { FC } from "react";
 import { cn } from "@/lib/utils";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { AspectRatio } from "@/ui/aspect-ratio";
+import { Button } from "@/ui/button";
+import { Icons } from "@/components/icons";
 import Image from "next/image";
-import Badge from "@/components/ui/badge";
+import Badge from "@/ui/badge";
 
 interface Product {
   name: string;
@@ -39,11 +41,19 @@ const ProductCard: FC<ProductCardProps> = ({
         />
         {product.sale && (
           <div className="absolute top-0 left-0 mt-2 ml-2">
-            <Badge variant="destructive" size="md">
+            <Badge variant="destructive" size="sm">
               Sale
             </Badge>
           </div>
         )}
+        <div className="absolute bottom-0 right-0 mb-2 mr-2">
+          <Button
+            size="sm"
+            className="rounded-full py-2 bg-white hover:bg-white"
+          >
+            <Icons.shoppingCart className="text-gray-700 h-5 w-5" />
+          </Button>
+        </div>
       </AspectRatio>
       <div className="space-y-1 text-sm font-sans p-4">
         <h3 className="font-bold leading-tight">{product.name}</h3>
