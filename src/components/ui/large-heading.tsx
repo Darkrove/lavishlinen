@@ -8,7 +8,7 @@ interface LargeHeadingPrpops
     VariantProps<typeof largeHeadingVariants> {}
 
 export const largeHeadingVariants = cva(
-  "text-black dark:text-white text-center lg:text-left font-extrabold leading-tight tracking-tighter",
+  "text-black dark:text-white text-left font-extrabold leading-tight tracking-tighter",
   {
     variants: {
       size: {

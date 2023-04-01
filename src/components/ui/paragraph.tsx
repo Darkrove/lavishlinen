@@ -8,7 +8,7 @@ interface ParagraphProps
     VariantProps<typeof paragraphVariants> {}
 
 export const paragraphVariants = cva(
-  "max-w-prose text-stone-700 dark:text-stone-300 mb-2 text-center",
+  "max-w-prose text-stone-700 dark:text-stone-300 mb-2 xt-left leading-relaxed",
   {
     variants: {
       size: {

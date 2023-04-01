@@ -2,7 +2,6 @@ import { Button } from "@/ui/button";
 import Paragraph from "@/ui/paragraph";
 import LargeHeading from "@/ui/large-heading";
 import ProductList from "@/components/product-list";
-import Link from "next/link";
 import Image from "next/image";
 
 export default function Home() {

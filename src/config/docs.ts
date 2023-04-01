@@ -13,7 +13,7 @@ export const docsConfig: DocsConfig = {
     },
     {
       title: "Contact",
-      href: "/",
+      href: "/contact",
     },
     {
       title: "Track Order",

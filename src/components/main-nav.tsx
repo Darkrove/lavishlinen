@@ -81,7 +81,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem className="hidden lg:flex">
-                <Link href={siteConfig.links.github} legacyBehavior passHref>
+                <Link href="/contact" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Contact
                   </NavigationMenuLink>
