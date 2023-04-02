@@ -12,8 +12,7 @@ export default function Home() {
           <div className="rounded-3xl overflow-hidden p-4 bg-stone-200 flex flex-col items-center justify-center w-full h-full ">
             <LargeHeading className="text-center">Lavish Linen</LargeHeading>
             <Paragraph className="text-center">
-              Experience Luxurious Comfort with Lavish Linen <br />- Where
-              Elegance Meets Comfort
+              Discover the Joy of Luxurious Living
             </Paragraph>
             <Button size="lg">Shop Now</Button>
           </div>
