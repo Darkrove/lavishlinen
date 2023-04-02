@@ -25,6 +25,7 @@ const productList: Product[] = [
     name: "Deep Green - Pure Linen slim fit Full  Sleeve Shirt",
     price: "Rs. 1890.00",
     cover: "/products/ASP_8574.jpg",
+    sale: true,
   },
   {
     name: "Rust Orange - Pure Linen slim fit Full  Sleeve Shirt",

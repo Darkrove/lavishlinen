@@ -25,10 +25,7 @@ const ProductCard: FC<ProductCardProps> = ({
   ...props
 }) => {
   return (
-    <div
-      className={cn("bg-[#fbf7f5] rounded-md shadow-md", className)}
-      {...props}
-    >
+    <div className={cn("bg-stone-100 rounded-md", className)} {...props}>
       <AspectRatio
         ratio={aspectRatio}
         className="relative overflow-hidden rounded-t-md"
@@ -46,14 +43,14 @@ const ProductCard: FC<ProductCardProps> = ({
             </Badge>
           </div>
         )}
-        <div className="absolute bottom-0 right-0 mb-2 mr-2">
+        {/* <div className="absolute bottom-0 right-0 mb-2 mr-2">
           <Button
             size="sm"
             className="rounded-full py-2 bg-white hover:bg-white"
           >
             <Icons.shoppingCart className="text-gray-700 h-5 w-5" />
           </Button>
-        </div>
+        </div> */}
       </AspectRatio>
       <div className="space-y-1 text-sm font-sans p-4">
         <h3 className="font-bold leading-tight">{product.name}</h3>

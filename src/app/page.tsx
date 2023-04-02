@@ -7,9 +7,9 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div>
-      <div className="h-screen w-full flex flex-col md:flex-row">
+      <div className="h-screen max-h-[800px] w-full flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 h-full flex flex-col items-center px-4 pt-4 pb-2 md:py-10 md:pl-10 md:pr-5 justify-center">
-          <div className="rounded-3xl overflow-hidden bg-[#f7ffaa] flex flex-col items-center justify-center w-full h-full ">
+          <div className="rounded-3xl overflow-hidden bg-orange-300 flex flex-col items-center justify-center w-full h-full ">
             <LargeHeading className="text-center">Lavish Linen</LargeHeading>
             <Paragraph className="text-center">Mumbai, India</Paragraph>
             <Button size="lg">Shop Now</Button>
