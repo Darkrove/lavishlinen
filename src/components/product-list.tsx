@@ -66,7 +66,7 @@ const ProductList: FC<ProductListProps> = ({}) => {
           />
         ))}
       </div>
-      <div className="flex w-full justify-center items-center my-6">
+      <div className="flex w-full justify-center items-center mt-4">
         <Button size="lg">View All</Button>
       </div>
     </div>

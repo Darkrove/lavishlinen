@@ -2,6 +2,7 @@ import { Button } from "@/ui/button";
 import Paragraph from "@/ui/paragraph";
 import LargeHeading from "@/ui/large-heading";
 import ProductList from "@/components/product-list";
+import TrendingProducts from "@/components/trending-products";
 import Image from "next/image";
 
 export default function Home() {
@@ -31,6 +32,9 @@ export default function Home() {
         </div>
       </div>
       <ProductList />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <TrendingProducts />
+      </div>
     </div>
   );
 }

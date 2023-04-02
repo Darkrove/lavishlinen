@@ -15,6 +15,7 @@ export const largeHeadingVariants = cva(
         default: "text-4xl md:text-5xl lg:text-6xl",
         sm: "text-2xl md:text-3xl lg:text-4xl",
         lg: "text-5xl md:text-6xl ld:text-7xl",
+        xs: "text-xl md:text-2xl lg:text-3xl",
       },
     },
     defaultVariants: {
