@@ -13,7 +13,7 @@ const NoProduct: FC<NoProductProps> = ({}) => {
       <Icons.emptyBox className="text-gray-500" />
       <div className="flex flex-col justify-center items-center p-4">
         <LargeHeading size="xs">No Product Found</LargeHeading>
-        <Paragraph className="text-gray-500 mt-2">
+        <Paragraph className="text-gray-500 mt-2 text-center">
           You can try our different products.
         </Paragraph>
         <Link href="/products">

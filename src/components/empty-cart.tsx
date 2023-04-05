@@ -13,7 +13,7 @@ const EmptyCart: FC<EmptyCartProps> = ({}) => {
       <Icons.emptyCart className="text-gray-500" />
       <div className="flex flex-col justify-center items-center p-4">
         <LargeHeading size="xs">Your cart is empty</LargeHeading>
-        <Paragraph className="text-gray-500 mt-2">
+        <Paragraph className="text-gray-500 mt-2 text-center">
           Looks like you havent added anything to your cart yet.
         </Paragraph>
         <Link href="/products">
