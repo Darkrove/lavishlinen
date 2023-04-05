@@ -16,7 +16,7 @@ const NoProduct: FC<NoProductProps> = ({}) => {
         <Paragraph className="text-gray-500 mt-2 text-center">
           You can try our different products.
         </Paragraph>
-        <Link href="/products">
+        <Link href="/categories/all">
           <Button variant="outline">View Other Products</Button>
         </Link>
       </div>

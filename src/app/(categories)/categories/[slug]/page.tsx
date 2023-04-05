@@ -14,6 +14,20 @@ const Product = async ({
   params,
   searchParams,
 }: ProductProps): Promise<any> => {
+  if (params.slug === "all") {
+    const { data: products } = await client.products.list();
+    if (!products || products.length === 0) {
+      return <NoProduct />;
+    }
+    return (
+      <div>
+        <LargeHeading size="xs">All Products</LargeHeading>
+        <Separator className="my-4" />
+        <ProductList products={products} />
+      </div>
+    );
+  }
+
   const category = await client.categories.retrieve(params.slug, {
     type: "slug",
   });

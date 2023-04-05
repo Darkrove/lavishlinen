@@ -41,7 +41,7 @@ export default async function Home() {
         <Separator className="my-4" />
         <ProductList products={products} />
         <div className="flex w-full justify-center items-center mt-4">
-          <Link href="/products">
+          <Link href="/categories/all">
             <Button size="lg">View All</Button>
           </Link>
         </div>

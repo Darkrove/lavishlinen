@@ -16,7 +16,7 @@ const EmptyCart: FC<EmptyCartProps> = ({}) => {
         <Paragraph className="text-gray-500 mt-2 text-center">
           Looks like you havent added anything to your cart yet.
         </Paragraph>
-        <Link href="/products">
+        <Link href="/categories/all">
           <Button variant="outline">Start Shopping</Button>
         </Link>
       </div>
