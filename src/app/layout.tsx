@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import Navbar from "@/components/main-nav";
-
+import Footer from "@/components/footer";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,8 +32,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <div className="flex min-h-screen flex-col">
             <Navbar />
-
             <div>{children}</div>
+            <Footer />
           </div>
         </body>
       </html>
