@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { GetServerSideProps, NextPage } from "next";
 import client from "@/lib/commerce";
 import LargeHeading from "@/ui/large-heading";
 import { Separator } from "@/ui/seperator";
@@ -6,19 +6,11 @@ import ProductList from "@/components/product-list";
 import NoProduct from "@/components/no-product";
 
 interface ProductProps {
-  params: { slug: string };
-  searchParams?: any;
+  category: any;
+  products: any;
 }
-{
-  /* @ts-expect-error Async Server Component */
-}
-const Product: FC<ProductProp> = async ({ params, searchParams }) => {
-  const category = await client.categories.retrieve(params.slug, {
-    type: "slug",
-  });
-  const { data: products } = await client.products.list({
-    category_slug: [params.slug],
-  });
+
+const Product: NextPage<ProductProps> = ({ category, products }) => {
   if (!products || products.length === 0) {
     return <NoProduct />;
   }
@@ -32,3 +24,19 @@ const Product: FC<ProductProp> = async ({ params, searchParams }) => {
 };
 
 export default Product;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { slug } = context.params;
+  const category = await client.categories.retrieve(slug as string, {
+    type: "slug",
+  });
+  const { data: products } = await client.products.list({
+    category_slug: [slug as string],
+  });
+  return {
+    props: {
+      category,
+      products,
+    },
+  };
+};
