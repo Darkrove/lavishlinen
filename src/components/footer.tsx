@@ -10,12 +10,9 @@ const Footer = () => {
         <div className="-mx-4 flex flex-col md:flex-row justify-between">
           <div className="w-full px-4 sm:w-2/3 lg:w-3/12">
             <div className="mb-10 w-full">
-              <Link
-                href="/"
-                classNameName="mr-6 flex items-center space-x-2 mb-4"
-              >
-                <Icons.logo classNameName="h-6 w-6" />
-                <span classNameName="font-bold">{siteConfig.name}</span>
+              <Link href="/" className="mr-6 flex items-center space-x-2 mb-4">
+                <Icons.logo className="h-6 w-6" />
+                <span className="font-bold">{siteConfig.name}</span>
               </Link>
               <p className="text-body-color mb-7 text-base">
                 Discover the Joy of Luxurious Living
