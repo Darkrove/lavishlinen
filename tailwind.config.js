@@ -30,7 +30,15 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      skeletonScreen: {
+        DEFAULT: {
+          baseColor: '#f5f5f4',
+          movingColor: 'linear-gradient(to right, transparent 0%, #f5f5f4 50%, transparent 100%)',
+          duration: '1s',
+          timing: 'linear',
+        },
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require('@gradin/tailwindcss-skeleton-screen'),],
 }

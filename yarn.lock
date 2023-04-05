@@ -69,6 +69,11 @@
     "@floating-ui/dom" "^0.5.3"
     use-isomorphic-layout-effect "^1.1.1"
 
+"@gradin/tailwindcss-skeleton-screen@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@gradin/tailwindcss-skeleton-screen/-/tailwindcss-skeleton-screen-1.0.2.tgz#bfb971e54afa7a0cab8e0cf75e43b0db447692d3"
+  integrity sha512-9l7gV7SqpBfb0KvzxSGWZNCDHyBIZpn2rG2Gw58OVho+/Bketnu/QMHyNEZq+E+uoosnvvMw05dgNexcISDQQQ==
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"

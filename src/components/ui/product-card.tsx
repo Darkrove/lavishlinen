@@ -49,14 +49,6 @@ const ProductCard: FC<ProductCardProps> = ({
             </Badge>
           </div>
         )}
-        {/* <div className="absolute bottom-0 right-0 mb-2 mr-2">
-          <Button
-            size="sm"
-            className="rounded-full py-2 bg-white hover:bg-white"
-          >
-            <Icons.shoppingCart className="text-gray-700 h-5 w-5" />
-          </Button>
-        </div> */}
       </AspectRatio>
       <div className="space-y-1 text-sm font-sans p-4">
         <h3 className="font-bold leading-tight">{name}</h3>
