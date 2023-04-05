@@ -50,7 +50,7 @@ const Product = async ({
               </SheetHeader>
             </SheetContent>
           </Sheet>
-          <Select className="hidden md:flex">
+          <Select>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
