@@ -9,8 +9,10 @@ interface ProductProps {
   params: { slug: string };
   searchParams?: any;
 }
-
-const Product: FC<ProductProps> = async ({ params, searchParams }) => {
+{
+  /* @ts-expect-error Async Server Component */
+}
+const Product: FC<ProductProp> = async ({ params, searchParams }) => {
   const category = await client.categories.retrieve(params.slug, {
     type: "slug",
   });
