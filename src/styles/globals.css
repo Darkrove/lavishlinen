@@ -5,3 +5,26 @@
 * {
   -webkit-tap-highlight-color: transparent;
 }
+
+.dot {
+  @apply -translate-y-6;
+}
+
+.bounce {
+  animation-name: bounce;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 3s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

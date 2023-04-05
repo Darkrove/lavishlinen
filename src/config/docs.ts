@@ -26,15 +26,20 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Full Sleeve Shirts",
-          href: "/",
+          href: "/categories/full-sleeve-shirts",
           items: [],
         },
         {
           title: "Pure Linen Fabric",
-          href: "/",
+          href: "/categories/pure-linen-fabric",
           items: [],
         },
-        { title: "Half Sleeve Shirts", href: "/", items: [], label: "New" },
+        {
+          title: "Half Sleeve Shirts",
+          href: "/categories/half-sleeve-shirts",
+          items: [],
+          label: "New",
+        },
       ],
     },
     {

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { Icons } from "@/components/icons";
 import { MobileNav } from "@/components/mobile-nav";
+import client from "@/lib/commerce";
 
 import {
   NavigationMenu,
@@ -20,31 +21,29 @@ import {
 } from "@/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
+import { CategoryData } from "@/types/api";
+import { Url } from "next/dist/shared/lib/router/router";
 
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Full Sleeve Shirts",
-    href: "/",
+    href: "/categories/full-sleeve-shirts",
     description:
       "Pure linen full sleeve shirt for mens with a button down collar and a chest pocket.",
   },
   {
     title: "Pure Linen Fabric",
-    href: "/",
+    href: "/categories/pure-linen-fabric",
     description:
       "Pure linen fabric for shirts, pants, dresses, and more. 100% linen.",
   },
   {
     title: "Half Sleeve Shirts",
-    href: "/",
+    href: "/categories/half-sleeve-shirts",
     description: "Pure linen half sleeve shirt for mens.",
   },
 ];
-
-interface NavbarProps {}
-
-const Navbar: FC<NavbarProps> = ({}) => {
+const Navbar = ({}) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-b-stone-200 bg-white dark:border-b-stone-700 dark:bg-stone-900">
       <div className="h-16 px-5 md:px-10 container max-w-7xl mx-auto w-full flex justify-between items-center">
@@ -101,9 +100,11 @@ const Navbar: FC<NavbarProps> = ({}) => {
         <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
           <MobileNav />
           <div className="flex items-center space-x-2">
-            <Button variant="ghost">
-              <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
-            </Button>
+            <Link href="/cart">
+              <Button variant="ghost">
+                <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
+              </Button>
+            </Link>
             <Button>Sign in</Button>
           </div>
         </div>

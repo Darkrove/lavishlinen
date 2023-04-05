@@ -1,11 +1,15 @@
+import Link from "next/link";
 import { Button } from "@/ui/button";
 import Paragraph from "@/ui/paragraph";
 import LargeHeading from "@/ui/large-heading";
 import ProductList from "@/components/product-list";
+import client from "@/lib/commerce";
+import { Separator } from "@/ui/seperator";
 import TrendingProducts from "@/components/trending-products";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+  const { data: products } = await client.products.list();
   return (
     <div>
       <div className="h-screen max-h-[800px] w-full flex flex-col md:flex-row">
@@ -31,7 +35,18 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <ProductList />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Separator className="my-4" />
+        <LargeHeading size="xs">Experience the Luxury</LargeHeading>
+        <Separator className="my-4" />
+        <ProductList products={products} />
+        <div className="flex w-full justify-center items-center mt-4">
+          <Link href="/products">
+            <Button size="lg">View All</Button>
+          </Link>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <TrendingProducts />
       </div>
