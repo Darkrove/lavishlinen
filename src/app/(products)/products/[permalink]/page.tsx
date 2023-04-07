@@ -31,6 +31,7 @@ const ProductPage = async ({
           alt={product.name}
           height={600}
           width={600}
+          className="rounded-xl"
         />
       </div>
       <div>
