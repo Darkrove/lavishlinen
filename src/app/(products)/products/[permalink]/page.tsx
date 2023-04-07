@@ -114,7 +114,7 @@ const ProductPage = async ({
           </div>
         )}
         <Paragraph className="font-bold">Quantity</Paragraph>
-        <Quantity quantity="1" />
+        <Quantity quantity={1} />
         <Button className="w-full my-3 rounded-xl">Add To Cart</Button>
       </div>
     </div>
