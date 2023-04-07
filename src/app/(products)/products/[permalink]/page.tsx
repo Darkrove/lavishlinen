@@ -145,32 +145,32 @@ const ProductPage = async ({
               your order is shipped, we estimate you will receive your order
               within 2-5 business days of its ship date.
               <br />
-              Return - Easy 10 Days Return & Refund Policy we have And Size
-              Change also we offer as per available stock.
+              <span className="font-semibold">Return</span>- Easy 10 Days Return
+              & Refund Policy we have And Size Change also we offer as per
+              available stock.
               <br />
-              Note - Fabric purchase is not available For return And exchnage.
+              <span className="font-semibold">Note</span>- Fabric purchase is
+              not available For return And exchnage.
               <br />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger>Care Instructions</AccordionTrigger>
             <AccordionContent>
-              Ideally :<br />
+              <span className="font-semibold">Ideally</span> :<br />
               Use mild Detergent
               <br />
               Hand wash or Short cycle alone
               <br />
               (15 to 30 minutes) or &quot;Delicate cycle&quot;.
               <br />
-              Avoid :<br />
-              Hot Wash
-              <br />
-              Dry Clean
-              <br />
-              Combo Wash
-              <br />
-              Tumble Dry
-              <br />
+              <span className="font-semibold">Avoid</span> :<br />
+              <ul>
+                <li>Hot Wash</li>
+                <li>Dry Clean</li>
+                <li>Combo Wash</li>
+                <li>Tumble Dry</li>
+              </ul>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
