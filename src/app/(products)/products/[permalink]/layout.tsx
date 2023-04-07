@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Lavish Linen | Categories",
+  title: "Lavish Linen | Products",
   description: "Linen for shirts, pants, dresses, and more.",
 };
 

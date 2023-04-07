@@ -21,15 +21,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-interface ProductProps {
+interface CategoryPageProps {
   params: { slug: string };
   searchParams?: any;
 }
 
-const Product = async ({
+const CategoryPage = async ({
   params,
   searchParams,
-}: ProductProps): Promise<any> => {
+}: CategoryPageProps): Promise<any> => {
   if (params.slug === "all") {
     const { data: products } = await client.products.list();
     if (!products || products.length === 0) {
@@ -73,12 +73,14 @@ const Product = async ({
   const category = await client.categories.retrieve(params.slug, {
     type: "slug",
   });
+
   const { data: products } = await client.products.list({
     category_slug: [params.slug],
   });
   if (!products || products.length === 0) {
     return <NoProduct />;
   }
+
   return (
     <div>
       <LargeHeading size="xs">{category.name}</LargeHeading>
@@ -114,4 +116,4 @@ const Product = async ({
   );
 };
 
-export default Product;
+export default CategoryPage;

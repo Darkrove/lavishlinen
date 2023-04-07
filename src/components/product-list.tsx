@@ -20,6 +20,7 @@ interface Product {
   image: {
     url: string;
   };
+  permalink: string;
 }
 
 const ProductList: FC<ProductListProps> = ({ products }) => {
@@ -32,6 +33,7 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
             name={product.name}
             price={product.price.formatted_with_symbol}
             imageUrl={product.image.url}
+            permalink={product.permalink}
             className="w-full"
           />
         ))}
