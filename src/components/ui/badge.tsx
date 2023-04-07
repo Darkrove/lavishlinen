@@ -1,7 +1,6 @@
 import { FC } from "react";
 import * as React from "react";
 import { VariantProps, cva } from "class-variance-authority";
-
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva("rounded-md no-underline group-hover:no-underline ", {

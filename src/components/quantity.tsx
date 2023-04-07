@@ -11,9 +11,13 @@ const Quantity: React.FC<QuantityProps> = ({ quantity }) => {
 
   return (
     <div className="flex items-center justify-start space-x-4">
-      <Button className="bg-white text-stone-900">-</Button>
+      <Button variant="outline" className="w-10 h-10">
+        -
+      </Button>
       <span>{value}</span>
-      <Button className="bg-white text-stone-900">+</Button>
+      <Button variant="outline" className="w-10 h-10">
+        +
+      </Button>
     </div>
   );
 };
