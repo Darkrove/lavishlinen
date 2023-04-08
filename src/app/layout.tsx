@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import Navbar from "@/components/main-nav";
 import Footer from "@/components/footer";
+import { CartProvider } from "@/store/cart";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,11 +31,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <div>{children}</div>
-            <Footer />
-          </div>
+          <CartProvider>
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <div>{children}</div>
+              <Footer />
+            </div>
+          </CartProvider>
         </body>
       </html>
     </>

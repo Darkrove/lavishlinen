@@ -7,6 +7,7 @@ import { FC } from "react";
 import { Icons } from "@/components/icons";
 import { MobileNav } from "@/components/mobile-nav";
 import client from "@/lib/commerce";
+import { useCartState } from "@/store/cart";
 
 import {
   NavigationMenu,
@@ -44,6 +45,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 const Navbar = ({}) => {
+  const { total_unique_items } = useCartState();
   return (
     <header className="sticky top-0 z-40 w-full border-b border-b-stone-200 bg-white dark:border-b-stone-700 dark:bg-stone-900">
       <div className="h-16 px-5 md:px-10 container max-w-7xl mx-auto w-full flex justify-between items-center">
@@ -100,9 +102,19 @@ const Navbar = ({}) => {
         <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
           <MobileNav />
           <div className="flex items-center space-x-2">
-            <Link href="/cart">
+            {/* <Link href="/cart">
               <Button variant="ghost">
                 <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
+              </Button>
+            </Link> */}
+            <Link href="/cart" className="relative">
+              <Button variant="ghost">
+                <Icons.shoppingCart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
+                {total_unique_items > 0 && (
+                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1 text-[10px] leading-none text-red-100 bg-red-600 rounded-full">
+                    {total_unique_items}
+                  </span>
+                )}
               </Button>
             </Link>
             <Button>Sign in</Button>
