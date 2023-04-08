@@ -117,7 +117,9 @@ const Navbar = ({}) => {
                 )}
               </Button>
             </Link>
-            <Button>Sign in</Button>
+            <Button variant="ghost">
+              <Icons.heart className="hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
+            </Button>
           </div>
         </div>
       </div>

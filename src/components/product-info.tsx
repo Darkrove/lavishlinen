@@ -43,8 +43,8 @@ const ProductInfo = ({ product }: Props) => {
     setCart(cart);
   };
   return (
-    <div>
-      <div className="flex flex-row justify-between items-center">
+    <div className="md:px-10">
+      <div className="flex flex-row justify-between items-center ">
         <Paragraph size="xs" className="uppercase">
           SKU - {product.sku}
         </Paragraph>

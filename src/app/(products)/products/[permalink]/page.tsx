@@ -15,7 +15,7 @@ const ProductPage = async ({
   const product = await client.products.retrieve(params.permalink, {
     type: "permalink",
   });
-
+  console.log(product);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
