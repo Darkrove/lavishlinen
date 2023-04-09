@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { AspectRatio } from "@/ui/aspect-ratio";
 
 interface Image {
   id: number;
@@ -29,8 +30,12 @@ const DemoCarousel = ({ images }: Props) => {
         <img src="/products/ASP_8573.jpg" />
         <img src="/products/ASP_8573.jpg" /> */}
         {images.map((image) => (
-          <div key={image.id}>
-            <img src={image.url} alt={image.filename} />
+          <div key={image.id} className="flex items-center justify-center">
+            <img
+              src={image.url}
+              alt={image.filename}
+              className="object-contain max-h-full max-w-full rounded-lg"
+            />
           </div>
         ))}
       </Carousel>
