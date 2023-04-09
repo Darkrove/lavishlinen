@@ -25,10 +25,6 @@ const DemoCarousel = ({ images }: Props) => {
         thumbWidth={60}
         className="productCarousel"
       >
-        {/* <img src="/products/ASP_8573.jpg" />
-        <img src="/products/ASP_8573.jpg" />
-        <img src="/products/ASP_8573.jpg" />
-        <img src="/products/ASP_8573.jpg" /> */}
         {images.map((image) => (
           <div key={image.id} className="flex items-center justify-center">
             <img
