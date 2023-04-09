@@ -1,10 +1,11 @@
-import React from "react";
-
+"use client";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import Image from "next/image";
 
 interface Image {
-  id: string;
+  id: number;
   url: string;
   filename: string;
 }
@@ -12,8 +13,7 @@ interface Image {
 interface Props {
   images: Image[];
 }
-
-const ProductDetailsCarousel = ({ images }: Props) => {
+const DemoCarousel = ({ images }: Props) => {
   console.log(images);
   return (
     <div className="text-white text-[20px] w-full max-w-[1360px] mx-auto sticky top-[50px]">
@@ -24,18 +24,13 @@ const ProductDetailsCarousel = ({ images }: Props) => {
         thumbWidth={60}
         className="productCarousel"
       >
-        {images?.map((img) => (
-          <div
-            key={img.id}
-            style={{ position: "relative", width: "100%", height: "100%" }}
-          >
-            <Image
-              src={img.url}
-              alt={img.filename}
-              layout="fill"
-              objectFit="contain"
-              quality={100}
-            />
+        {/* <img src="/products/ASP_8573.jpg" />
+        <img src="/products/ASP_8573.jpg" />
+        <img src="/products/ASP_8573.jpg" />
+        <img src="/products/ASP_8573.jpg" /> */}
+        {images.map((image) => (
+          <div key={image.id}>
+            <img src={image.url} alt={image.filename} />
           </div>
         ))}
       </Carousel>
@@ -43,4 +38,4 @@ const ProductDetailsCarousel = ({ images }: Props) => {
   );
 };
 
-export default ProductDetailsCarousel;
+export default DemoCarousel;
