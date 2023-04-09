@@ -63,11 +63,11 @@ function CartPage({}: PageProps) {
   console.log(state);
   return (
     <>
-      <LargeHeading size="sm" className="text-center">
+      <LargeHeading size="sm" className="md:pl-5">
         Shopping Cart
       </LargeHeading>
       <div className="flex flex-col lg:flex-row">
-        <div className="w-full p-5">
+        <div className="w-full md:p-5">
           <Paragraph>Cart Items</Paragraph>
 
           {cartItems.map((item) => (
@@ -112,7 +112,7 @@ function CartPage({}: PageProps) {
             </div>
           ))}
         </div>
-        <div className="w-full p-5">
+        <div className="w-full md:p-5">
           <Paragraph>Summary</Paragraph>
 
           <div className="p-5 my-5 bg-black/[0.05] rounded-xl">
