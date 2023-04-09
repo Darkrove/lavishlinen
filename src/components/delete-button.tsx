@@ -26,11 +26,8 @@ const DeleteButton = ({ id }: Props) => {
       onClick={handleDelete}
       isLoading={loading}
     >
-      {loading ? (
-        ""
-      ) : (
         <Icons.trash2 className="hover:text-stone-900 w-5 h-5 dark:text-stone-400 dark:hover:text-stone-100" />
-      )}
+
     </Button>
   );
 };
