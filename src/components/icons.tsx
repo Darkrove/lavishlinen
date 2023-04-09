@@ -28,6 +28,7 @@ import {
   ShoppingCart,
   SunMedium,
   Trash,
+  Trash2,
   Twitter,
   User,
   X,
@@ -79,6 +80,7 @@ export const Icons = {
   sun: SunMedium,
   shoppingCart: ShoppingCart,
   moon: Moon,
+  trash2: Trash2,
   laptop: Laptop,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>

@@ -2,10 +2,10 @@
 import LargeHeading from "@/components/ui/large-heading";
 import Paragraph from "@/components/ui/paragraph";
 import EmptyCart from "@/components/empty-cart";
-import { useCartState } from "@/store/cart";
+import { useCartDispatch, useCartState } from "@/store/cart";
 import Image from "next/image";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import ProductCard from "@/components/ui/product-card";
+import DeleteButton from "@/components/delete-button";
 
 interface CartItem {
   id: string;
@@ -61,20 +61,20 @@ function CartPage({}: PageProps) {
 
   const cartItems: CartItem[] = state.line_items;
   console.log(state);
+
   return (
     <>
       <LargeHeading size="sm" className="md:pl-5">
         Shopping Cart
       </LargeHeading>
       <div className="flex flex-col lg:flex-row">
-        <div className="w-full md:p-5">
+        <div className="w-full lg:w-3/4 md:p-5">
           <Paragraph>Cart Items</Paragraph>
 
           {cartItems.map((item) => (
             <div key={item.id}>
               <div className="flex py-5 gap-3 md:gap-5 border-b">
-                {/* IMAGE START */}
-                <div className="shrink-0 aspect-square w-[50px] md:w-[120px]">
+                <div className="shrink-0 aspect-square w-[80px] md:w-[120px]">
                   <AspectRatio
                     ratio={1}
                     className="relative overflow-hidden rounded-md"
@@ -89,30 +89,23 @@ function CartPage({}: PageProps) {
                 </div>
                 <div className="w-full flex flex-col">
                   <div className="flex flex-col md:flex-row justify-between">
-                    {/* PRODUCT TITLE */}
-                    <div className="text-black/[0.8]">
-                      <Paragraph>{item.name}</Paragraph>
-                    </div>
-
-                    {/* PRODUCT PRICE */}
-                    <div className=" text-black/[0.5] mt-2">
-                      <Paragraph>
-                        MRP : {item.price.formatted_with_symbol}
-                      </Paragraph>
-                    </div>
+                    <Paragraph className="font-semibold">{item.name}</Paragraph>
+                    <Paragraph className="text-gray-500">
+                      MRP : {item.price.formatted_with_symbol}
+                    </Paragraph>
                   </div>
-                  <Paragraph>Quantity: {item.quantity}</Paragraph>
+                  <div className="flex flex-row justify-between items-center">
+                    <Paragraph className="text-gray-500">
+                      Quantity: {item.quantity}
+                    </Paragraph>
+                    <DeleteButton id={item.id} />
+                  </div>
                 </div>
-                {/* <div>
-              <Paragraph>{item.name}</Paragraph>
-              <p>{item.price.formatted_with_symbol}</p>
-              <p>Quantity: {item.quantity}</p>
-            </div> */}
               </div>
             </div>
           ))}
         </div>
-        <div className="w-full md:p-5">
+        <div className="w-full lg:w-1/4 md:p-5">
           <Paragraph>Summary</Paragraph>
 
           <div className="p-5 my-5 bg-black/[0.05] rounded-xl">

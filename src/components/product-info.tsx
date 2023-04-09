@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import LargeHeading from "@/ui/large-heading";
 import { Button } from "@/ui/button";
 import Paragraph from "@/ui/paragraph";
@@ -38,9 +38,12 @@ interface Props {
 
 const ProductInfo = ({ product }: Props) => {
   const { setCart } = useCartDispatch();
+  const [loading, setLoading] = useState(false);
   const addToCart = async (productId: string) => {
+    setLoading(true);
     const cart = await client.cart.add(productId, 1);
     setCart(cart);
+    setLoading(false);
   };
   return (
     <div className="md:px-10">
@@ -122,13 +125,15 @@ const ProductInfo = ({ product }: Props) => {
       </div>
       <div className="my-3 flex flex-col space-y-3">
         <Button
-          className="w-full  rounded-lg"
+          className="w-full rounded-lg"
           onClick={() => addToCart(product.id)}
+          isLoading={loading}
+          disabled={product.inventory.available < 1 ? true : false}
         >
           Add To Cart
         </Button>
         <Button variant="subtle" className="w-full rounded-lg">
-          Buy Now
+          Add to Wishlist
         </Button>
       </div>
       <Accordion type="single" collapsible>
