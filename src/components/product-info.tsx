@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/accordion";
 import { useCartDispatch } from "@/store/cart";
 import client from "@/lib/commerce";
+import { useToast } from "@/hooks/ui/use-toast";
 
 interface Product {
   sku: string;
@@ -38,12 +39,24 @@ interface Props {
 
 const ProductInfo = ({ product }: Props) => {
   const { setCart } = useCartDispatch();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const addToCart = async (productId: string) => {
-    setLoading(true);
-    const cart = await client.cart.add(productId, 1);
-    setCart(cart);
-    setLoading(false);
+    if (product.inventory.available < 1) {
+      toast({
+        title: "Out of Stock",
+        description: "This product is out of stock.",
+      });
+    } else {
+      setLoading(true);
+      const cart = await client.cart.add(productId, 1);
+      setCart(cart);
+      setLoading(false);
+      toast({
+        title: "Added to Cart",
+        description: "This product has been added to your cart.",
+      });
+    }
   };
   return (
     <div className="md:px-10">
@@ -128,7 +141,6 @@ const ProductInfo = ({ product }: Props) => {
           className="w-full rounded-lg"
           onClick={() => addToCart(product.id)}
           isLoading={loading}
-          disabled={product.inventory.available < 1 ? true : false}
         >
           Add To Cart
         </Button>

@@ -51,3 +51,26 @@ export interface Cart {
     symbol: string;
   };
 }
+
+export interface Item {
+  id: string;
+  product_id: string;
+  name: string;
+  product_name: string;
+  sku: string;
+  permalink: string;
+  quantity: number;
+  price: {
+    formatted_with_symbol: string;
+  };
+  line_total: {
+    formatted_with_symbol: string;
+  };
+  variant: null;
+  image: {
+    id: string;
+    url: string;
+    filename: string;
+  };
+  tax: null;
+}

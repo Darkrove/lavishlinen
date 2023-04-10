@@ -27,7 +27,8 @@
       "@/ui/*": ["./src/components/ui/*"],
       "@/types/*": ["./src/types/*"],
       "@/helpers/*": ["./src/helpers/*"],
-      "@/store/*": ["./src/store/*"]
+      "@/store/*": ["./src/store/*"],
+      "@/hooks/*": ["./src/hooks/*"]
     }
   },
   "include": [

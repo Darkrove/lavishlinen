@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google";
 import Navbar from "@/components/main-nav";
 import Footer from "@/components/footer";
 import { CartProvider } from "@/store/cart";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <div>{children}</div>
               <Footer />
             </div>
+            <Toaster />
           </CartProvider>
         </body>
       </html>

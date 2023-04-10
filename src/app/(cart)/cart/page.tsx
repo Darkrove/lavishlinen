@@ -1,66 +1,35 @@
 "use client";
+import React, { useState } from "react";
 import LargeHeading from "@/components/ui/large-heading";
 import Paragraph from "@/components/ui/paragraph";
 import EmptyCart from "@/components/empty-cart";
 import { useCartDispatch, useCartState } from "@/store/cart";
-import Image from "next/image";
-import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import DeleteButton from "@/components/delete-button";
-
-interface CartItem {
-  id: string;
-  product_id: string;
-  name: string;
-  product_name: string;
-  sku: string;
-  permalink: string;
-  quantity: number;
-  price: {
-    raw: number;
-    formatted: string;
-    formatted_with_symbol: string;
-    formatted_with_code: string;
-  };
-  line_total: {
-    raw: number;
-    formatted: string;
-    formatted_with_symbol: string;
-    formatted_with_code: string;
-  };
-  is_valid: boolean;
-  product_meta: any[];
-  selected_options: any[];
-  variant: null;
-  image: {
-    id: string;
-    url: string;
-    description: null;
-    is_image: boolean;
-    filename: string;
-    file_size: number;
-    file_extension: string;
-    image_dimensions: {
-      width: number;
-      height: number;
-    };
-    meta: any[];
-    created_at: number;
-    updated_at: number;
-  };
-  tax: null;
-}
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/icons";
+import client from "@/lib/commerce";
+import { Item } from "@/types/cart";
+import CartItem from "@/components/cart-item";
 
 interface PageProps {}
 
 function CartPage({}: PageProps) {
   const state = useCartState();
+  const [loading, setLoading] = useState(false);
+  const { setCart } = useCartDispatch();
 
   if (state.line_items.length === 0) {
     return <EmptyCart />;
   }
 
-  const cartItems: CartItem[] = state.line_items;
+  const cartItems: Item[] = state.line_items;
   console.log(state);
+
+  const handleClearCart = async () => {
+    setLoading(true);
+    const cart = await client.cart.empty();
+    setCart(cart);
+    setLoading(false);
+  };
 
   return (
     <>
@@ -72,37 +41,7 @@ function CartPage({}: PageProps) {
           <Paragraph>Cart Items</Paragraph>
 
           {cartItems.map((item) => (
-            <div key={item.id}>
-              <div className="flex py-5 gap-3 md:gap-5 border-b">
-                <div className="shrink-0 aspect-square w-[80px] md:w-[120px]">
-                  <AspectRatio
-                    ratio={1}
-                    className="relative overflow-hidden rounded-md"
-                  >
-                    <Image
-                      src={item.image.url}
-                      alt={item.name}
-                      width={120}
-                      height={120}
-                    />
-                  </AspectRatio>
-                </div>
-                <div className="w-full flex flex-col">
-                  <div className="flex flex-col md:flex-row justify-between">
-                    <Paragraph className="font-semibold">{item.name}</Paragraph>
-                    <Paragraph className="text-gray-500">
-                      MRP : {item.price.formatted_with_symbol}
-                    </Paragraph>
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <Paragraph className="text-gray-500">
-                      Quantity: {item.quantity}
-                    </Paragraph>
-                    <DeleteButton id={item.id} />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CartItem key={item.id} item={item} />
           ))}
         </div>
         <div className="w-full lg:w-1/4 md:p-5">
@@ -123,6 +62,16 @@ function CartPage({}: PageProps) {
               include delivery costs and international transaction fees.
             </div>
           </div>
+          <Button className="w-full">Proceed to Checkout</Button>
+          <Button
+            variant="outline"
+            className="w-full mt-3"
+            onClick={handleClearCart}
+            isLoading={loading}
+          >
+            <Icons.trash2 className="w-5 h-5 mr-2" />
+            Clear Cart
+          </Button>
         </div>
       </div>
     </>
