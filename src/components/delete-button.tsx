@@ -11,23 +11,27 @@ interface Props {
 }
 
 const DeleteButton = ({ id }: Props) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { setCart } = useCartDispatch();
   const handleDelete = async () => {
-    setLoading(true);
+    setIsLoading(true);
     const cart = await client.cart.remove(id);
     setCart(cart);
-    setLoading(false);
+    setIsLoading(false);
   };
   return (
     <Button
-      variant="ghost"
       size="sm"
       onClick={handleDelete}
-      isLoading={loading}
+      disabled={isLoading}
+      variant="destructive"
     >
-        <Icons.trash2 className="hover:text-stone-900 w-5 h-5 dark:text-stone-400 dark:hover:text-stone-100" />
-
+      {isLoading ? (
+        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+      ) : (
+        <Icons.trash2 className="w-4 h-4 mr-2" />
+      )}{" "}
+      Delete
     </Button>
   );
 };

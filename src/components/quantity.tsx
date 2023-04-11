@@ -1,22 +1,37 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/ui/button";
+import { Icons } from "@/components/icons";
 
 type QuantityProps = {
   quantity: number;
+  plusClickAction: () => void;
+  minusClickAction: () => void;
 };
 
-const Quantity: React.FC<QuantityProps> = ({ quantity }) => {
-  const [value, setValue] = useState(quantity);
-
+const Quantity: React.FC<QuantityProps> = ({
+  quantity,
+  plusClickAction,
+  minusClickAction,
+}) => {
   return (
     <div className="flex items-center justify-start space-x-4">
-      <Button variant="outline" className="w-10 h-10">
-        -
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-9"
+        onClick={minusClickAction}
+      >
+        <Icons.minus className="w-4 h-4" />
       </Button>
-      <span>{value}</span>
-      <Button variant="outline" className="w-10 h-10">
-        +
+      <span>{quantity}</span>
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-9"
+        onClick={plusClickAction}
+      >
+        <Icons.plus className="w-4 h-4" />
       </Button>
     </div>
   );

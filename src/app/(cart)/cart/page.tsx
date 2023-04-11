@@ -14,7 +14,7 @@ interface PageProps {}
 
 function CartPage({}: PageProps) {
   const state = useCartState();
-  const [loading, setLoading] = useState(false);
+  const [isEmptyCartLoading, setIsEmptyCartLoading] = useState(false);
   const { setCart } = useCartDispatch();
 
   if (state.line_items.length === 0) {
@@ -25,10 +25,15 @@ function CartPage({}: PageProps) {
   console.log(state);
 
   const handleClearCart = async () => {
-    setLoading(true);
+    setIsEmptyCartLoading(true);
     const cart = await client.cart.empty();
     setCart(cart);
-    setLoading(false);
+    setIsEmptyCartLoading(false);
+  };
+
+  const handleUpdateCart = async (id: string, quantity: number) => {
+    const cart = await client.cart.update(id, { quantity });
+    setCart(cart);
   };
 
   return (
@@ -41,7 +46,11 @@ function CartPage({}: PageProps) {
           <Paragraph>Cart Items</Paragraph>
 
           {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
+            <CartItem
+              key={item.id}
+              item={item}
+              onUpdateCart={handleUpdateCart}
+            />
           ))}
         </div>
         <div className="w-full lg:w-1/4 md:p-5">
@@ -67,9 +76,13 @@ function CartPage({}: PageProps) {
             variant="outline"
             className="w-full mt-3"
             onClick={handleClearCart}
-            isLoading={loading}
+            disabled={isEmptyCartLoading}
           >
-            <Icons.trash2 className="w-5 h-5 mr-2" />
+            {isEmptyCartLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.trash2 className="w-4 h-4 mr-2" />
+            )}{" "}
             Clear Cart
           </Button>
         </div>
