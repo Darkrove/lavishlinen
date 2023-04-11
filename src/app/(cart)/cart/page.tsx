@@ -9,6 +9,7 @@ import { Icons } from "@/components/icons";
 import client from "@/lib/commerce";
 import { Item } from "@/types/cart";
 import CartItem from "@/components/cart-item";
+import Link from "next/link";
 
 interface PageProps {}
 
@@ -71,7 +72,9 @@ function CartPage({}: PageProps) {
               include delivery costs and international transaction fees.
             </div>
           </div>
-          <Button className="w-full">Proceed to Checkout</Button>
+          <Link href="/checkout">
+            <Button className="w-full">Proceed to Checkout</Button>
+          </Link>
           <Button
             variant="outline"
             className="w-full mt-3"

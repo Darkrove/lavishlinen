@@ -78,7 +78,7 @@ const ProductInfo = ({ product }: Props) => {
         <Paragraph size="xs" className="uppercase">
           SKU - {product.sku}
         </Paragraph>
-        <Paragraph size="xs" className="">
+        <Paragraph size="xs" className="uppercase">
           ID - {product.id}
         </Paragraph>
       </div>
