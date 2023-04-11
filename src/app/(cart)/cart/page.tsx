@@ -32,7 +32,7 @@ function CartPage({}: PageProps) {
   };
 
   const handleUpdateCart = async (id: string, quantity: number) => {
-    const cart = await client.cart.update(id, { quantity });
+    const cart = await client.cart.update(id, { quantity: quantity });
     setCart(cart);
   };
 

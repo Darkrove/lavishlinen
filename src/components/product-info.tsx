@@ -41,6 +41,7 @@ const ProductInfo = ({ product }: Props) => {
   const { setCart } = useCartDispatch();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const addToCart = async (productId: string) => {
     if (product.inventory.available < 1) {
       toast({
@@ -49,12 +50,25 @@ const ProductInfo = ({ product }: Props) => {
       });
     } else {
       setLoading(true);
-      const cart = await client.cart.add(productId, 1);
+      const cart = await client.cart.add(productId, quantity);
       setCart(cart);
       setLoading(false);
       toast({
         title: "Added to Cart",
         description: "This product has been added to your cart.",
+      });
+    }
+  };
+  const handlePlusClick = () => {
+    setQuantity(quantity + 1);
+  };
+  const handleMinusClick = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    } else {
+      toast({
+        title: "Minimum Quantity",
+        description: "You can't add less than 1 quantity.",
       });
     }
   };
@@ -120,7 +134,11 @@ const ProductInfo = ({ product }: Props) => {
       </Paragraph>
       <InventoryStatus available={product.inventory.available} />
       <Paragraph className="font-bold">Quantity</Paragraph>
-      <Quantity quantity={1} />
+      <Quantity
+        quantity={quantity}
+        plusClickAction={handlePlusClick}
+        minusClickAction={handleMinusClick}
+      />
       <Paragraph className="font-bold">Size</Paragraph>
       <div className="flex flex-row space-x-2">
         <Button variant="outline" className="w-10 h-10">
