@@ -28,6 +28,14 @@ const ShippingForm = ({ checkoutTokenId }: Props) => {
   const [shippingOptions, setShippingOptions] = useState([]);
   const [shippingOption, setShippingOption] = useState("");
 
+  const [state, setState] = useState("account");
+  const [shippingInfoSaved, setShippingInfoSaved] = useState(false);
+
+  const handleSaveShippingInfo = () => {
+    setShippingInfoSaved(true);
+    setState("payment");
+  };
+
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
     label: name,
@@ -113,10 +121,12 @@ const ShippingForm = ({ checkoutTokenId }: Props) => {
   }, [checkoutTokenId, shippingCountry, shippingSubdivision]);
 
   return (
-    <Tabs defaultValue="account" className="max-w-2xl w-full">
+    <Tabs defaultValue="account" value={state} className="max-w-2xl w-full">
       <TabsList>
         <TabsTrigger value="account">Shipping Details</TabsTrigger>
-        <TabsTrigger value="payment">Payment Details</TabsTrigger>
+        <TabsTrigger value="payment" disabled={!shippingInfoSaved}>
+          Payment Details
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="account">
         <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -210,7 +220,7 @@ const ShippingForm = ({ checkoutTokenId }: Props) => {
             </Button>
           </Link>
 
-          <Button>
+          <Button onClick={handleSaveShippingInfo}>
             <span>Next</span>
             <Icons.arrowRight className="w-4 h-4 ml-2" />
           </Button>
@@ -234,8 +244,15 @@ const ShippingForm = ({ checkoutTokenId }: Props) => {
             <Input id="cvv" type="password" placeholder="XXX" />
           </div>
         </div>
-        <div className="flex">
-          <Button>Save payment information</Button>
+
+        <div className="flex justify-between">
+          <Button onClick={() => setState("account")} variant="outline">
+            <Icons.arrowLeft className="w-4 h-4 mr-2" /> <span>Back</span>
+          </Button>
+
+          <Button>
+            <span>Checkout</span>
+          </Button>
         </div>
       </TabsContent>
     </Tabs>
