@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import client from "@/lib/commerce";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
+import { useToast } from "@/hooks/ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -22,26 +22,33 @@ import {
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
 import CheckoutToken from "@/types/checkout";
+import { useForm } from "react-hook-form";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
 interface Props {
-  checkoutTokenId: string;
   token: CheckoutToken;
 }
 
-const ShippingForm = ({ checkoutTokenId, token }: Props) => {
+const ShippingForm = ({ token }: Props) => {
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("IND");
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState("");
   const [shippingOptions, setShippingOptions] = useState([]);
   const [shippingOption, setShippingOption] = useState("");
-
   const [state, setState] = useState("account");
   const [shippingInfoSaved, setShippingInfoSaved] = useState(false);
+  const { toast } = useToast();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
+  console.log(errors);
 
   const handleSaveShippingInfo = () => {
     setShippingInfoSaved(true);
@@ -114,8 +121,8 @@ const ShippingForm = ({ checkoutTokenId, token }: Props) => {
   }
 
   useEffect(() => {
-    fetchShippingCountries(checkoutTokenId);
-  }, [checkoutTokenId]);
+    fetchShippingCountries(token.id);
+  }, [token.id]);
 
   useEffect(() => {
     if (shippingCountry) {
@@ -125,12 +132,8 @@ const ShippingForm = ({ checkoutTokenId, token }: Props) => {
 
   useEffect(() => {
     if (shippingSubdivision)
-      fetchShippingOptions(
-        checkoutTokenId,
-        shippingCountry,
-        shippingSubdivision
-      );
-  }, [checkoutTokenId, shippingCountry, shippingSubdivision]);
+      fetchShippingOptions(token.id, shippingCountry, shippingSubdivision);
+  }, [token.id, shippingCountry, shippingSubdivision]);
 
   return (
     <Tabs defaultValue="account" value={state} className="max-w-2xl w-full">
@@ -142,101 +145,184 @@ const ShippingForm = ({ checkoutTokenId, token }: Props) => {
       </TabsList>
       <TabsContent value="account">
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Enter your details. Click save when you&apos;re done.
+          Enter your details. Click submit when you&apos;re done.
         </p>
-        <div className="grid md:grid-cols-2 gap-2 py-4">
-          <div className="space-y-1">
-            <Label htmlFor="firstname">First Name *</Label>
-            <Input id="firstname" placeholder="Enter your first name" />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid md:grid-cols-2 gap-2 py-4">
+            <div className="space-y-1">
+              <div className="flex justify-between py-1">
+                <Label htmlFor="firstname">First Name *</Label>
+                <Label htmlFor="firstname" className="text-red-600">
+                  {errors.Firstname?.type === "required" &&
+                    "First name is required"}
+                  {errors.Firstname?.type === "maxLength" &&
+                    "First name cannot exceed 80 characters"}
+                </Label>
+              </div>
+              <Input
+                id="firstname"
+                placeholder="Enter your first name"
+                {...register("Firstname", { required: true, maxLength: 80 })}
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between py-1">
+                <Label htmlFor="lastname">Last Name *</Label>
+                <Label htmlFor="lastname" className="text-red-600">
+                  {errors.Lastname?.type === "required" &&
+                    "Last name is required"}
+                  {errors.Lastname?.type === "maxLength" &&
+                    "Last name cannot exceed 100 characters"}
+                </Label>
+              </div>
+              <Input
+                id="lastname"
+                placeholder="Enter your last name"
+                {...register("Lastname", { required: true, maxLength: 100 })}
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between py-1">
+                <Label htmlFor="address">Address *</Label>
+                <Label htmlFor="address" className="text-red-600">
+                  {errors.Address?.type === "required" && "Address is required"}
+                  {errors.Address?.type === "maxLength" &&
+                    "Address cannot exceed 300 characters"}
+                </Label>
+              </div>
+              <Input
+                id="address"
+                placeholder="Enter your address"
+                {...register("Address", { required: true, maxLength: 300 })}
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between py-1">
+                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email" className="text-red-600">
+                  {errors.Email?.type === "required" && "Email is required"}
+                  {errors.Email?.type === "pattern" &&
+                    "Please enter a valid email address"}
+                </Label>
+              </div>
+              <Input
+                id="email"
+                placeholder="Enter your email"
+                {...register("Email", {
+                  required: true,
+                  pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                })}
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between py-1">
+                <Label htmlFor="city">City *</Label>
+                <Label htmlFor="city" className="text-red-600">
+                  {errors.City?.type === "required" && "City is required"}
+                  {errors.City?.type === "maxLength" &&
+                    "City cannot exceed 200 characters"}
+                </Label>
+              </div>
+              <Input
+                id="city"
+                placeholder="Enter your city"
+                {...register("City", { required: true, maxLength: 200 })}
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between py-1">
+                <Label htmlFor="pin">Pin code *</Label>
+                <Label htmlFor="pin" className="text-red-600">
+                  {errors.Pin?.type === "required" && "Pin code is required"}
+                  {errors.Pin?.type === "pattern" &&
+                    "Please enter a valid pin code"}
+                </Label>
+              </div>
+              <Input
+                id="pin"
+                placeholder="Enter your pin code"
+                {...register("Pin", {
+                  required: true,
+                  pattern: /^[1-9][0-9]{2}\s{0,1}[0-9]{3}$/,
+                })}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="country">Country *</Label>
+              <Select
+                value={shippingCountry}
+                onValueChange={setShippingCountry}
+              >
+                <SelectTrigger>
+                  <SelectValue aria-label={shippingCountry}>
+                    {getStateLabel(countries, shippingCountry)}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.id} value={country.id}>
+                      {country.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="state">State *</Label>
+              <Select
+                value={shippingSubdivision}
+                onValueChange={setShippingSubdivision}
+              >
+                <SelectTrigger>
+                  <SelectValue aria-label={shippingSubdivision}>
+                    {getStateLabel(subdivisions, shippingSubdivision)}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {subdivisions.map((subdivision) => (
+                    <SelectItem key={subdivision.id} value={subdivision.id}>
+                      {subdivision.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="state">Shipping option *</Label>
+              <Select value={shippingOption} onValueChange={setShippingOption}>
+                <SelectTrigger>
+                  <SelectValue aria-label={shippingOption}>
+                    {getStateLabel(options, shippingOption)}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="lastname">Last Name *</Label>
-            <Input id="lastname" placeholder="Enter your last name" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="address">Address *</Label>
-            <Input id="address" placeholder="Enter your address" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="email">Email *</Label>
-            <Input id="email" placeholder="Enter your email" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="city">City *</Label>
-            <Input id="city" placeholder="Enter your city" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="pin">Pin code *</Label>
-            <Input id="pin" placeholder="Enter your pin code" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="country">Country *</Label>
-            <Select value={shippingCountry} onValueChange={setShippingCountry}>
-              <SelectTrigger>
-                <SelectValue aria-label={shippingCountry}>
-                  {getStateLabel(countries, shippingCountry)}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {countries.map((country) => (
-                  <SelectItem key={country.id} value={country.id}>
-                    {country.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="state">State *</Label>
-            <Select
-              value={shippingSubdivision}
-              onValueChange={setShippingSubdivision}
-            >
-              <SelectTrigger>
-                <SelectValue aria-label={shippingSubdivision}>
-                  {getStateLabel(subdivisions, shippingSubdivision)}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {subdivisions.map((subdivision) => (
-                  <SelectItem key={subdivision.id} value={subdivision.id}>
-                    {subdivision.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="state">Shipping option *</Label>
-            <Select value={shippingOption} onValueChange={setShippingOption}>
-              <SelectTrigger>
-                <SelectValue aria-label={shippingOption}>
-                  {getStateLabel(options, shippingOption)}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {options.map((option) => (
-                  <SelectItem key={option.id} value={option.id}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          <Link href="/cart">
-            <Button variant="outline">
-              <Icons.arrowLeft className="w-4 h-4 mr-2" />{" "}
-              <span>Back to cart</span>
-            </Button>
-          </Link>
 
-          <Button onClick={handleSaveShippingInfo}>
-            <span>Next</span>
-            <Icons.arrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
+          <div className="flex justify-between">
+            {/* <Link href="/cart">
+              <Button variant="outline">
+                <Icons.arrowLeft className="w-4 h-4 mr-2" />{" "}
+                <span>Back to cart</span>
+              </Button>
+            </Link> */}
+            <Button variant="outline">
+              <input type="submit" />
+            </Button>
+
+            <Button onClick={handleSaveShippingInfo}>
+              <span>Next</span>
+              <Icons.arrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </form>
       </TabsContent>
       <TabsContent value="payment">
         <p className="text-sm text-slate-500 dark:text-slate-400">

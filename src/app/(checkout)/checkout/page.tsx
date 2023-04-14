@@ -50,7 +50,7 @@ function CheckoutPage() {
         <LargeHeading>Checkout</LargeHeading>
         <Paragraph className="uppercase">{tokenId}</Paragraph>
       </div>
-      <ShippingForm checkoutTokenId={tokenId} token={token} />
+      <ShippingForm token={token} />
     </div>
   );
 }
