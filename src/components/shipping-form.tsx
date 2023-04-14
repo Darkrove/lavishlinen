@@ -21,7 +21,7 @@ import {
   CardElement,
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
-import CheckoutToken from "@/type/checkout";
+import CheckoutToken from "@/types/checkout";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
