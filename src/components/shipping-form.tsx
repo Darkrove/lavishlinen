@@ -15,12 +15,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  ElementsConsumer,
+} from "@stripe/react-stripe-js";
+import CheckoutToken from "@/type/checkout";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 interface Props {
   checkoutTokenId: string;
+  token: CheckoutToken;
 }
 
-const ShippingForm = ({ checkoutTokenId }: Props) => {
+const ShippingForm = ({ checkoutTokenId, token }: Props) => {
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("IND");
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -231,7 +243,7 @@ const ShippingForm = ({ checkoutTokenId }: Props) => {
           Enter your payment information below.
         </p>
         <div className="grid gap-2 py-4">
-          <div className="space-y-1">
+          {/* <div className="space-y-1">
             <Label htmlFor="cardNumber">Card Number *</Label>
             <Input id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" />
           </div>
@@ -242,17 +254,31 @@ const ShippingForm = ({ checkoutTokenId }: Props) => {
           <div className="space-y-1">
             <Label htmlFor="cvv">CVV *</Label>
             <Input id="cvv" type="password" placeholder="XXX" />
+          </div> */}
+          <div className="space-y-1">
+            <Elements stripe={stripePromise}>
+              <ElementsConsumer>
+                {({ elements, stripe }) => (
+                  <form>
+                    <CardElement />
+                    <div className="mt-4 flex justify-between">
+                      <Button
+                        onClick={() => setState("account")}
+                        variant="outline"
+                      >
+                        <Icons.arrowLeft className="w-4 h-4 mr-2" />{" "}
+                        <span>Back</span>
+                      </Button>
+
+                      <Button type="submit" disabled={!stripe}>
+                        <span>Pay {token.total.formatted_with_symbol}</span>
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </ElementsConsumer>
+            </Elements>
           </div>
-        </div>
-
-        <div className="flex justify-between">
-          <Button onClick={() => setState("account")} variant="outline">
-            <Icons.arrowLeft className="w-4 h-4 mr-2" /> <span>Back</span>
-          </Button>
-
-          <Button>
-            <span>Checkout</span>
-          </Button>
         </div>
       </TabsContent>
     </Tabs>
