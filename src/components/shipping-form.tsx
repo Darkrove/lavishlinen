@@ -25,7 +25,7 @@ import CheckoutToken from "@/types/checkout";
 import { useForm } from "react-hook-form";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  "pk_live_51KqAIASJd33mN6xoSHIxZqsLkMtzjrFDRevRUC0YzR98Y7w0gcOdPRJicbBaHBv235bZ9YHeBTODSWbwKAgzhsWm00a5wJf9vC"
 );
 
 interface Props {
