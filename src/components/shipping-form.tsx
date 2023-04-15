@@ -22,6 +22,7 @@ import {
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Token from "@/types/checkout";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -42,7 +43,7 @@ type FormData = {
 
 const ShippingForm = ({ stateId }: Props) => {
   // States
-  const [token, setToken] = useState({});
+  const [token, setToken] = useState<Token>({});
   const [tokenId, setTokenId] = useState("");
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("IND");
@@ -394,8 +395,8 @@ const ShippingForm = ({ stateId }: Props) => {
                       <Button type="submit" disabled={!stripe}>
                         <span>
                           Pay{" "}
-                          {tokenId && token && token.total
-                            ? token.total.formatted_with_symbol
+                          {tokenId && token && token?.total
+                            ? token?.total?.formatted_with_symbol
                             : ""}
                         </span>
                       </Button>
