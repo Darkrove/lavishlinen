@@ -236,7 +236,7 @@ const ShippingForm = ({ stateId }: Props) => {
 
   const handlePayment = async (
     e: React.FormEvent<HTMLFormElement>,
-    elements: Elements,
+    elements: typeof Elements,
     stripe: Stripe
   ) => {
     e.preventDefault();
