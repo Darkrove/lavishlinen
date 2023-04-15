@@ -7,6 +7,7 @@ import client from "@/lib/commerce";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
+import { useCartDispatch, useCartState } from "@/store/cart";
 import { useToast } from "@/hooks/ui/use-toast";
 import {
   Select,
@@ -22,10 +23,10 @@ import {
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Token } from "@/types/checkout";
+import { Token, OrderData } from "@/types/checkout";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY!
 );
 
 interface Props {
@@ -53,7 +54,12 @@ const ShippingForm = ({ stateId }: Props) => {
   const [shippingOption, setShippingOption] = useState("");
   const [state, setState] = useState("account");
   const [shippingInfoSaved, setShippingInfoSaved] = useState(false);
+  const [shippingData, setShippingData] = useState({});
+  const [order, setOrder] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { toast } = useToast();
+  const { setCart } = useCartDispatch();
   const {
     register,
     handleSubmit,
@@ -131,6 +137,73 @@ const ShippingForm = ({ stateId }: Props) => {
     setShippingOption(options[0].id);
   };
 
+  const handleRefreshCart = async () => {
+    const newCart = await client.cart.refresh();
+    console.log(newCart);
+    setCart(newCart);
+  };
+
+  const handleCaptureCheckout = async (
+    checkoutTokenId: string,
+    orderData: OrderData,
+    stripe: Stripe,
+    data: OrderData
+  ) => {
+    try {
+      console.log(orderData);
+      setIsLoading(true);
+      const incomingOrder = await client.checkout.capture(
+        checkoutTokenId,
+        orderData
+      );
+      console.log(incomingOrder);
+      setOrder(incomingOrder);
+      handleRefreshCart();
+    } catch (response) {
+      console.log(response);
+      if (
+        response.statusCode !== 402 ||
+        response.data.error.type !== "requires_verification"
+      ) {
+        // Handle the error as usual because it's not related to 3D secure payments
+        console.log(response);
+        return;
+      }
+      const cardActionResult = await stripe.handleCardAction(
+        response.data.error.param
+      );
+
+      if (cardActionResult.error) {
+        // The customer failed to authenticate themselves with their bank and the transaction has been declined
+        alert(cardActionResult.error.message);
+        return;
+      }
+      try {
+        const order = await client.checkout.capture(checkoutTokenId, {
+          ...data,
+          payment: {
+            gateway: "stripe",
+            stripe: {
+              payment_intent_id: cardActionResult.paymentIntent.id,
+            },
+          },
+        });
+
+        // If we get here the order has been captured successfully and the order detail is available in the order variable
+        console.log(order);
+        setOrder(order);
+        handleRefreshCart();
+        return;
+      } catch (response) {
+        // Just like above, we get here if the order failed to capture with Commrece.js
+        console.log(response);
+        alert(response.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   type Array = {
     id: string;
     label: string;
@@ -141,8 +214,72 @@ const ShippingForm = ({ stateId }: Props) => {
     return state ? state.label : "";
   }
 
-  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
-  console.log(errors);
+  const onSubmit: SubmitHandler<FormData> = (data) =>
+    setShippingData({
+      ...data,
+      shippingCountry,
+      shippingSubdivision,
+      shippingOption,
+    });
+  console.log(shippingData);
+
+  const handlePayment = async (
+    e: React.FormEvent<HTMLFormElement>,
+    elements: Elements,
+    stripe: Stripe
+  ) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    const cardElment = elements.getElement(CardElement);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElment,
+    });
+    const cardToken = await stripe.createToken(cardElment);
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+      });
+    } else {
+      const data = {
+        line_items: token?.line_items,
+        customer: {
+          firstname: shippingData.Firstname,
+          lastname: shippingData.Lastname,
+          email: shippingData.Email,
+        },
+        shipping: {
+          name: shippingData.Firstname + " " + shippingData.Lastname,
+          street: shippingData.Address,
+          town_city: shippingData.City,
+          county_state: shippingData.shippingSubdivision,
+          postal_zip_code: shippingData.Pin,
+          country: shippingData.shippingCountry,
+        },
+        fulfillment: { shipping_method: shippingData.shippingOption },
+        billing: {
+          name: shippingData.Firstname + " " + shippingData.Lastname,
+          street: shippingData.Address,
+          town_city: shippingData.City,
+          county_state: shippingData.shippingSubdivision,
+          postal_zip_code: shippingData.Pin,
+          country: shippingData.shippingCountry,
+        },
+      };
+      const orderData = {
+        ...data,
+        payment: {
+          gateway: "stripe",
+          stripe: {
+            payment_method_id: paymentMethod?.id,
+          },
+        },
+      };
+      handleCaptureCheckout(tokenId, orderData, stripe, data);
+    }
+  };
 
   const handleSaveShippingInfo = () => {
     setShippingInfoSaved(true);
@@ -381,7 +518,15 @@ const ShippingForm = ({ stateId }: Props) => {
             <Elements stripe={stripePromise}>
               <ElementsConsumer>
                 {({ elements, stripe }) => (
-                  <form>
+                  <form
+                    onSubmit={(e) =>
+                      handlePayment(
+                        e,
+                        elements as StripeElements,
+                        stripe as Stripe
+                      )
+                    }
+                  >
                     <CardElement />
                     <div className="mt-4 flex justify-between">
                       <Button
@@ -392,7 +537,11 @@ const ShippingForm = ({ stateId }: Props) => {
                         <span>Back</span>
                       </Button>
 
-                      <Button type="submit" disabled={!stripe}>
+                      <Button
+                        isLoading={isLoading}
+                        type="submit"
+                        disabled={!stripe}
+                      >
                         <span>
                           Pay{" "}
                           {tokenId && token && token?.total

@@ -113,3 +113,83 @@ export interface Token {
     };
   }[];
 }
+
+export interface OrderData {
+  line_items: {
+    id: string;
+    product_id: string;
+    name: string;
+    product_name: string;
+    sku: string;
+    permalink: string;
+    quantity: number;
+    price: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+    line_total: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+    is_valid: boolean;
+    product_meta: never[];
+    selected_options: never[];
+    variant: null;
+    image: {
+      id: string;
+      url: string;
+      description: null;
+      is_image: boolean;
+      filename: string;
+      file_size: number;
+      file_extension: string;
+      image_dimensions: {
+        width: number;
+        height: number;
+      };
+      meta: never[];
+      created_at: number;
+      updated_at: number;
+    };
+    tax: {
+      is_taxable: boolean;
+      taxable_amount: number | null;
+      amount: number | null;
+      breakdown: null;
+    };
+  }[];
+  customer: {
+    firstname: string;
+    lastname: string;
+    email: string;
+  };
+  shipping: {
+    name: string;
+    street: string;
+    town_city: string;
+    county_state: string;
+    postal_zip_code: string;
+    country: string;
+  };
+  fulfillment: {
+    shipping_method: string;
+  };
+  billing: {
+    name: string;
+    street: string;
+    town_city: string;
+    county_stat: string;
+    postal_zip_code: string;
+    country: string;
+  };
+  payment: {
+    gateway: string;
+    stripe: {
+      payment_method_id: string;
+    };
+  };
+}
