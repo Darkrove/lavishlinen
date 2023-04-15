@@ -29,7 +29,8 @@
       "@/helpers/*": ["./src/helpers/*"],
       "@/store/*": ["./src/store/*"],
       "@/hooks/*": ["./src/hooks/*"]
-    }
+    },
+    "types": ["node", "@types/stripe-v3"]
   },
   "include": [
     "next-env.d.ts",
