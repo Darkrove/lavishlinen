@@ -21,7 +21,7 @@ import {
   CardElement,
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -31,9 +31,19 @@ interface Props {
   stateId: string;
 }
 
+type FormData = {
+  Firstname: string;
+  Lastname: string;
+  Address: string;
+  City: string;
+  Pin: string;
+  Email: string;
+};
+
 const ShippingForm = ({ stateId }: Props) => {
   // States
   const [token, setToken] = useState({});
+  const [tokenId, setTokenId] = useState("");
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("IND");
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -47,7 +57,7 @@ const ShippingForm = ({ stateId }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormData>();
 
   // Mapper
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
@@ -83,6 +93,7 @@ const ShippingForm = ({ stateId }: Props) => {
       });
 
       setToken(token);
+      setTokenId(token.id);
       console.log(token);
     } catch (error) {
       console.log(error);
@@ -129,16 +140,7 @@ const ShippingForm = ({ stateId }: Props) => {
     return state ? state.label : "";
   }
 
-  type FormData = {
-    Firstname: string;
-    Lastname: string;
-    Email: string;
-    Address: string;
-    City: string;
-    Pin: string;
-  };
-
-  const onSubmit = (data: FormData) => console.log(data);
+  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
   console.log(errors);
 
   const handleSaveShippingInfo = () => {
@@ -152,8 +154,10 @@ const ShippingForm = ({ stateId }: Props) => {
   }, [stateId]);
 
   useEffect(() => {
-    fetchShippingCountries(token.id);
-  }, [token.id]);
+    if (tokenId) {
+      fetchShippingCountries(tokenId);
+    }
+  }, [tokenId]);
 
   useEffect(() => {
     if (shippingCountry) {
@@ -163,8 +167,8 @@ const ShippingForm = ({ stateId }: Props) => {
 
   useEffect(() => {
     if (shippingSubdivision)
-      fetchShippingOptions(token.id, shippingCountry, shippingSubdivision);
-  }, [token.id, shippingCountry, shippingSubdivision]);
+      fetchShippingOptions(tokenId, shippingCountry, shippingSubdivision);
+  }, [tokenId, shippingCountry, shippingSubdivision]);
 
   return (
     <Tabs defaultValue="account" value={state} className="max-w-2xl w-full">
@@ -388,7 +392,12 @@ const ShippingForm = ({ stateId }: Props) => {
                       </Button>
 
                       <Button type="submit" disabled={!stripe}>
-                        <span>Pay {token.total.formatted_with_symbol}</span>
+                        <span>
+                          Pay{" "}
+                          {tokenId && token && token.total
+                            ? token.total.formatted_with_symbol
+                            : ""}
+                        </span>
                       </Button>
                     </div>
                   </form>
