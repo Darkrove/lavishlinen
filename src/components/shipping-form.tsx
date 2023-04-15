@@ -43,7 +43,7 @@ type FormData = {
 
 const ShippingForm = ({ stateId }: Props) => {
   // States
-  const [token, setToken] = useState<Token>({});
+  const [token, setToken] = useState<Token | null>(null);
   const [tokenId, setTokenId] = useState("");
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("IND");
