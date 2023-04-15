@@ -16,8 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { loadStripe } from "@stripe/stripe-js";
-import { Stripe } from "@types/stripe-v3";
+import { loadStripe, Stripe  } from "@stripe/stripe-js";
 import {
   Elements,
   CardElement,
