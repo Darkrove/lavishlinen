@@ -21,7 +21,6 @@ import {
   CardElement,
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
-import Checkout from "@/types/checkout";
 import { useForm } from "react-hook-form";
 
 const stripePromise = loadStripe(
@@ -29,10 +28,12 @@ const stripePromise = loadStripe(
 );
 
 interface Props {
-  token: Checkout;
+  stateId: string;
 }
 
-const ShippingForm = ({ token }: Props) => {
+const ShippingForm = ({ stateId }: Props) => {
+  // States
+  const [token, setToken] = useState({});
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("IND");
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -47,14 +48,8 @@ const ShippingForm = ({ token }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  console.log(errors);
 
-  const handleSaveShippingInfo = () => {
-    setShippingInfoSaved(true);
-    setState("payment");
-  };
-
+  // Mapper
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
     label: name,
@@ -79,6 +74,20 @@ const ShippingForm = ({ token }: Props) => {
     id: so.id,
     label: `${so.description} - (${so.price.formatted_with_symbol})`,
   }));
+
+  // Functions
+  const generateToken = async (stateId: string) => {
+    try {
+      const token = await client.checkout.generateToken(stateId, {
+        type: "cart",
+      });
+
+      setToken(token);
+      console.log(token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchShippingCountries = async (checkoutTokenId: string) => {
     const { countries } = await client.services.localeListShippingCountries(
@@ -119,6 +128,28 @@ const ShippingForm = ({ token }: Props) => {
     const state = states.find((s) => s.id === idToFind);
     return state ? state.label : "";
   }
+
+  type FormData = {
+    Firstname: string;
+    Lastname: string;
+    Email: string;
+    Address: string;
+    City: string;
+    Pin: string;
+  };
+
+  const onSubmit = (data: FormData) => console.log(data);
+  console.log(errors);
+
+  const handleSaveShippingInfo = () => {
+    setShippingInfoSaved(true);
+    setState("payment");
+  };
+
+  // UseEffects
+  useEffect(() => {
+    generateToken(stateId);
+  }, [stateId]);
 
   useEffect(() => {
     fetchShippingCountries(token.id);

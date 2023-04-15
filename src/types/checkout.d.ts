@@ -1,4 +1,4 @@
-export interface Checkout {
+export interface Token {
   id: string;
   cart_id: string;
   currency: {

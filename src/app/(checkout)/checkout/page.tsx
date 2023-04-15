@@ -24,33 +24,13 @@ interface FormValues {
 
 function CheckoutPage() {
   const state = useCartState();
-  const [tokenId, setTokenId] = useState("");
-  const [token, setToken] = useState({});
-  useEffect(() => {
-    const generateToken = async () => {
-      try {
-        const token = await client.checkout.generateToken(state.id, {
-          type: "cart",
-        });
-
-        setToken(token);
-        setTokenId(token.id);
-        console.log(token);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    generateToken();
-  }, [state.id]);
-
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="flex flex-col items-center">
         <LargeHeading>Checkout</LargeHeading>
-        <Paragraph className="uppercase">{tokenId}</Paragraph>
+        <Paragraph className="uppercase">{state.id}</Paragraph>
       </div>
-      <ShippingForm token={token} />
+      <ShippingForm stateId={state.id} />
     </div>
   );
 }
