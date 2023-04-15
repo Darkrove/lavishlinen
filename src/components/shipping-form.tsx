@@ -170,18 +170,18 @@ const ShippingForm = ({ stateId }: Props) => {
       console.log(incomingOrder);
       setOrder(incomingOrder);
       handleRefreshCart();
-    } catch (response: Response) {
+    } catch (response) {
       console.log(response);
       if (
-        response.statusCode !== 402 ||
-        response.data.error.type !== "requires_verification"
+        (response as Response).statusCode !== 402 ||
+        (response as Response).data.error.type !== "requires_verification"
       ) {
         // Handle the error as usual because it's not related to 3D secure payments
         console.log(response);
         return;
       }
       const cardActionResult = await stripe.handleCardAction(
-        response.data.error.param
+        (response as Response).data.error.param
       );
 
       if (cardActionResult.error) {
@@ -205,10 +205,10 @@ const ShippingForm = ({ stateId }: Props) => {
         setOrder(order);
         handleRefreshCart();
         return;
-      } catch (response: Reponse) {
+      } catch (response) {
         // Just like above, we get here if the order failed to capture with Commrece.js
         console.log(response);
-        alert(response.message);
+        alert((response as Response).message);
       }
     } finally {
       setIsLoading(false);
