@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { loadStripe, Stripe  } from "@stripe/stripe-js";
+import { loadStripe, Stripe } from "@stripe/stripe-js";
 import {
   Elements,
   CardElement,
@@ -40,6 +40,17 @@ type FormData = {
   City: string;
   Pin: string;
   Email: string;
+};
+
+type Response = {
+  statusCode: number;
+  data: {
+    error: {
+      type: string;
+      param: string;
+    };
+  };
+  message: string;
 };
 
 const ShippingForm = ({ stateId }: Props) => {
@@ -159,7 +170,7 @@ const ShippingForm = ({ stateId }: Props) => {
       console.log(incomingOrder);
       setOrder(incomingOrder);
       handleRefreshCart();
-    } catch (response) {
+    } catch (response: Response) {
       console.log(response);
       if (
         response.statusCode !== 402 ||
@@ -194,7 +205,7 @@ const ShippingForm = ({ stateId }: Props) => {
         setOrder(order);
         handleRefreshCart();
         return;
-      } catch (response) {
+      } catch (response: Reponse) {
         // Just like above, we get here if the order failed to capture with Commrece.js
         console.log(response);
         alert(response.message);
