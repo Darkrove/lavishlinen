@@ -22,7 +22,7 @@ import {
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Token from "@/types/checkout";
+import { Token } from "@/types/checkout";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
