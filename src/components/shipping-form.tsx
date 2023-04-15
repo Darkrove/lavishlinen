@@ -21,15 +21,15 @@ import {
   CardElement,
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
-import CheckoutToken from "@/types/checkout";
+import Checkout from "@/types/checkout";
 import { useForm } from "react-hook-form";
 
 const stripePromise = loadStripe(
-  "pk_live_51KqAIASJd33mN6xoSHIxZqsLkMtzjrFDRevRUC0YzR98Y7w0gcOdPRJicbBaHBv235bZ9YHeBTODSWbwKAgzhsWm00a5wJf9vC"
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
 interface Props {
-  token: CheckoutToken;
+  token: Checkout;
 }
 
 const ShippingForm = ({ token }: Props) => {
