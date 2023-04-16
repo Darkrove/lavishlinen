@@ -99,6 +99,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       if (!stripe) {
         return;
       }
+      setPayment({ status: "requires_action" });
       const cardActionResult = await stripe.handleCardAction(
         (response as Response).data.error.param
       );
@@ -108,6 +109,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         alert(cardActionResult.error.message);
         return;
       }
+
       try {
         const order = await client.checkout.capture(checkoutTokenId, {
           ...data,
@@ -221,8 +223,8 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
               !elements
             }
             className={clsx({
-              "bg-green-600": payment.status === "success",
-              "bg-red-600": payment.status === "error",
+              "bg-green-500": payment.status === "success",
+              "bg-red-500": payment.status === "error",
             })}
           >
             <span>
@@ -234,7 +236,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
           </Button>
         </div>
         {payment.status !== "initial" && (
-          <div className="bg-yellow-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
+          <div className="bg-rose-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
             <PaymentStatus status={payment.status} />
           </div>
         )}
@@ -242,7 +244,15 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         {payment.status === "success" && order && order?.id && (
           <div className="bg-green-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
             <Paragraph className="text-white text-center">
-              Your order has been placed successfully. Your order id is{" "}
+              Thank you for your purchase,{" "}
+              <span className="font-bold uppercase">
+                {shippingData.Firstname}
+              </span>
+              ! We have sent you an email with the order details.
+            </Paragraph>
+            <Separator className="my-2" />
+            <Paragraph className="text-white text-center">
+              Your order id is{" "}
               <span className="font-bold uppercase">{order?.id}</span>
             </Paragraph>
           </div>
