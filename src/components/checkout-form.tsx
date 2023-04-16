@@ -267,19 +267,22 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
           </Link>
         )}
         {payment.status === "error" && (
-          <Button className="bg-green-500 w-full">
-            <a
-              className="flex space-x-2 justify-center items-center w-full"
-              href="https://wa.me/9850698000?text=I%20have%20a%20query%20regarding%20your%20product."
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Icons.whatsapp className="w-4 h-4" />
-              <span>
-                Contact us on Whatsapp for any queries regarding your order
-              </span>
-            </a>
-          </Button>
+          <>
+            <Paragraph className="text-red-500 text-center">
+              Having trouble with payment? Please contact us.
+            </Paragraph>
+            <Button className="bg-green-500 w-full">
+              <a
+                className="flex space-x-2 justify-center items-center w-full"
+                href="https://wa.me/9850698000?text=I%20have%20a%20query%20regarding%20your%20product."
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icons.whatsapp className="w-4 h-4" />
+                <span>Get Help</span>
+              </a>
+            </Button>
+          </>
         )}
       </form>
     </>
