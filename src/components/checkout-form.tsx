@@ -240,53 +240,11 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         )}
 
         {payment.status === "success" && order && order?.id && (
-          <div className="bg-slate-200 text-slate-800 p-4 rounded-lg">
-            <div className="bg-green-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
-              <Paragraph>
-                Your order has been placed successfully. Your order id is{" "}
-                <span className="font-bold">{order?.id}</span>
-              </Paragraph>
-            </div>
-            <Paragraph>Order Summary</Paragraph>
-            <div>
-              {order?.line_items?.map((item) => (
-                <div key={item.id} className="flex justify-between">
-                  <Paragraph>
-                    {item.product_name}
-                    <span className="text-green-500">x {item.quantity}</span>
-                  </Paragraph>
-                  <Paragraph className="text-green-500">
-                    {item.line_total.formatted_with_symbol}
-                  </Paragraph>
-                </div>
-              ))}
-
-              <Separator className="my-2 bg-slate-800" />
-              <div className="flex justify-between">
-                <Paragraph>Subtotal</Paragraph>
-                <Paragraph>{order?.subtotal?.formatted_with_symbol}</Paragraph>
-              </div>
-              <div className="flex justify-between">
-                <Paragraph>Shipping</Paragraph>
-                <Paragraph>
-                  {order?.shipping?.price?.formatted_with_symbol}
-                </Paragraph>
-              </div>
-            </div>
-            <Separator className="my-2 bg-slate-800" />
-            <div className="flex justify-between items-center">
-              <Paragraph>Total</Paragraph>
-              <div className="flex justify-between items-center">
-                <Paragraph>{order?.total?.formatted_with_symbol}</Paragraph>
-                <Badge
-                  variant="outline"
-                  size="sm"
-                  className="text-green-500 ml-2 mb-2"
-                >
-                  INR
-                </Badge>
-              </div>
-            </div>
+          <div className="bg-green-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
+            <Paragraph className="text-white text-center">
+              Your order has been placed successfully. Your order id is{" "}
+              <span className="font-bold uppercase">{order?.id}</span>
+            </Paragraph>
           </div>
         )}
 
