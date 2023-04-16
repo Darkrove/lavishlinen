@@ -88,6 +88,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       toast({
         title: "Order Placed",
         description: "Your order has been placed successfully",
+        variant: "success",
       });
       handleRefreshCart();
     } catch (response) {
@@ -102,7 +103,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         toast({
           title: "Error",
           description: (response as Response).message,
-          variant: "destructive"
+          variant: "destructive",
         });
         console.warn(response);
         return;
@@ -139,6 +140,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         toast({
           title: "Order Placed",
           description: "Your order has been placed successfully",
+          variant: "success",
         });
         handleRefreshCart();
 

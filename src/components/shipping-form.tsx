@@ -161,16 +161,41 @@ const ShippingForm = ({ stateId }: Props) => {
   }
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    const { Firstname, Lastname, Email, Address, City, Pin } = data;
+
+    if (
+      !Firstname ||
+      !Lastname ||
+      !Email ||
+      !Address ||
+      !City ||
+      !Pin ||
+      !shippingCountry ||
+      !shippingSubdivision ||
+      !shippingOption
+    ) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setShippingData({
       ...data,
       shippingCountry,
       shippingSubdivision,
       shippingOption,
     });
+
     toast({
       title: "Shipping Info Saved",
       description: "Your shipping info has been saved",
+      variant: "success",
     });
+
+    handleNext();
   };
   console.log(shippingData);
 
@@ -219,7 +244,7 @@ const ShippingForm = ({ stateId }: Props) => {
       </TabsList>
       <TabsContent value="account">
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Enter your details. Click submit when you&apos;re done.
+          Enter your details. Click next when you&apos;re done.
         </p>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid md:grid-cols-2 gap-2 py-4">
@@ -381,17 +406,17 @@ const ShippingForm = ({ stateId }: Props) => {
           </div>
 
           <div className="flex justify-between">
-            {/* <Link href="/cart">
+            <Link href="/cart">
               <Button variant="outline">
                 <Icons.arrowLeft className="w-4 h-4 mr-2" />{" "}
                 <span>Back to cart</span>
               </Button>
-            </Link> */}
-            <Button variant="outline">
+            </Link>
+            {/* <Button variant="outline">
               <input type="submit" />
-            </Button>
+            </Button> */}
 
-            <Button onClick={handleNext}>
+            <Button type="submit">
               <span>Next</span>
               <Icons.arrowRight className="w-4 h-4 ml-2" />
             </Button>
@@ -400,7 +425,7 @@ const ShippingForm = ({ stateId }: Props) => {
       </TabsContent>
       <TabsContent value="payment">
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Enter your payment information below.
+          Enter your card information below.
         </p>
         <div className="grid gap-2 py-4">
           <div className="space-y-1">
