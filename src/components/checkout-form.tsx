@@ -5,12 +5,22 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Token, ShippingData, OrderData, Response } from "@/types/checkout";
+import {
+  Token,
+  ShippingData,
+  OrderData,
+  Response,
+  IncomingOrder,
+} from "@/types/checkout";
 import { Button } from "@/ui/button";
 import { Icons } from "@/components/icons";
 import client from "@/lib/commerce";
 import { useCartDispatch, useCartState } from "@/store/cart";
 import clsx from "clsx";
+import Link from "next/link";
+import Paragraph from "./ui/paragraph";
+import { Separator } from "./ui/seperator";
+import Badge from "./ui/badge";
 
 interface Props {
   token: Token | null;
@@ -24,6 +34,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
   const [payment, setPayment] = useState({ status: "initial" });
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [order, setOrder] = useState<IncomingOrder>();
   const stripe = useStripe();
   const { setCart } = useCartDispatch();
   const elements = useElements();
@@ -38,7 +49,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       case "requires_action":
         return <p>Authenticating...</p>;
 
-      case "succeeded":
+      case "success":
         return <p>Payment Succeeded 🥳</p>;
 
       case "error":
@@ -70,6 +81,8 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         orderData
       );
       console.log(incomingOrder);
+      setOrder(incomingOrder);
+      setPayment({ status: "success" });
       handleRefreshCart();
     } catch (response) {
       console.warn(response);
@@ -108,8 +121,10 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
 
         // If we get here the order has been captured successfully and the order detail is available in the order variable
         console.log(order);
-        handleRefreshCart();
+        setOrder(order);
         setPayment({ status: "success" });
+        handleRefreshCart();
+
         return;
       } catch (response) {
         // Just like above, we get here if the order failed to capture with Commrece.js
@@ -189,9 +204,9 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <CardElement />
-        <div className="mt-4 flex justify-between">
+        <div className="flex justify-between">
           {/* onClick={() => setState("account")} */}
           <Button variant="outline" onClick={handleBack}>
             <Icons.arrowLeft className="w-4 h-4 mr-2" /> <span>Back</span>
@@ -200,7 +215,11 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
           <Button
             isLoading={isLoading}
             type="submit"
-            disabled={!stripe || !elements}
+            disabled={
+              !["initial", "succeeded", "error"].includes(payment.status) ||
+              !stripe ||
+              !elements
+            }
             className={clsx({
               "bg-green-600": payment.status === "success",
               "bg-red-600": payment.status === "error",
@@ -214,7 +233,86 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
             </span>
           </Button>
         </div>
-        <PaymentStatus status={payment.status} />
+        {payment.status !== "initial" && (
+          <div className="bg-yellow-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
+            <PaymentStatus status={payment.status} />
+          </div>
+        )}
+
+        {payment.status === "success" && order && order?.id && (
+          <div className="bg-slate-200 text-slate-800 p-4 rounded-lg">
+            <div className="bg-green-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
+              <Paragraph>
+                Your order has been placed successfully. Your order id is{" "}
+                <span className="font-bold">{order?.id}</span>
+              </Paragraph>
+            </div>
+            <Paragraph>Order Summary</Paragraph>
+            <div>
+              {order?.line_items?.map((item) => (
+                <div key={item.id} className="flex justify-between">
+                  <Paragraph>
+                    {item.product_name}
+                    <span className="text-green-500">x {item.quantity}</span>
+                  </Paragraph>
+                  <Paragraph className="text-green-500">
+                    {item.line_total.formatted_with_symbol}
+                  </Paragraph>
+                </div>
+              ))}
+
+              <Separator className="my-2 bg-slate-800" />
+              <div className="flex justify-between">
+                <Paragraph>Subtotal</Paragraph>
+                <Paragraph>{order?.subtotal?.formatted_with_symbol}</Paragraph>
+              </div>
+              <div className="flex justify-between">
+                <Paragraph>Shipping</Paragraph>
+                <Paragraph>
+                  {order?.shipping?.price?.formatted_with_symbol}
+                </Paragraph>
+              </div>
+            </div>
+            <Separator className="my-2 bg-slate-800" />
+            <div className="flex justify-between items-center">
+              <Paragraph>Total</Paragraph>
+              <div className="flex justify-between items-center">
+                <Paragraph>{order?.total?.formatted_with_symbol}</Paragraph>
+                <Badge
+                  variant="outline"
+                  size="sm"
+                  className="text-green-500 ml-2 mb-2"
+                >
+                  INR
+                </Badge>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {payment.status === "success" && (
+          <Link href="/categories/all">
+            <Button className="w-full bg-violet-500 mg">
+              <span>Continue Shopping</span>
+              <Icons.shoppingCart className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
+        )}
+        {payment.status === "error" && (
+          <Button className="bg-green-500 w-full">
+            <a
+              className="flex space-x-2 justify-center items-center w-full"
+              href="https://wa.me/9850698000?text=I%20have%20a%20query%20regarding%20your%20product."
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Icons.whatsapp className="w-4 h-4" />
+              <span>
+                Contact us on Whatsapp for any queries regarding your order
+              </span>
+            </a>
+          </Button>
+        )}
       </form>
     </>
   );

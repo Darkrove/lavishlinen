@@ -171,3 +171,75 @@ export interface Response {
   };
   message: string;
 }
+
+export interface IncomingOrder {
+  id: string;
+  subtotal: {
+    raw: number;
+    formatted: string;
+    formatted_with_symbol: string;
+    formatted_with_code: string;
+  };
+  total: {
+    raw: number;
+    formatted: string;
+    formatted_with_symbol: string;
+    formatted_with_code: string;
+  };
+  shipping: {
+    id: string;
+    description: string;
+    provider: string;
+    price: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+  };
+  line_items: {
+    id: string;
+    product_id: string;
+    product_name: string;
+    product_sku: string;
+    quantity: number;
+    price: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+    line_total: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+    line_total_with_tax: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+    variant: any[];
+    selected_options: any[];
+    tax: {
+      is_taxable: boolean;
+      amount: {
+        raw: number;
+        formatted: string;
+        formatted_with_symbol: string;
+        formatted_with_code: string;
+      };
+      taxable_amount: {
+        raw: number;
+        formatted: string;
+        formatted_with_symbol: string;
+        formatted_with_code: string;
+      };
+      rate: number;
+      rate_percentage: string;
+      breakdown: any[];
+    };
+  }[];
+}
