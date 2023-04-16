@@ -47,6 +47,7 @@ const ProductInfo = ({ product }: Props) => {
       toast({
         title: "Out of Stock",
         description: "This product is out of stock.",
+        variant: "warning",
       });
     } else {
       setLoading(true);
@@ -56,6 +57,7 @@ const ProductInfo = ({ product }: Props) => {
       toast({
         title: "Added to Cart",
         description: "This product has been added to your cart.",
+        variant: "success",
       });
     }
   };
@@ -69,6 +71,7 @@ const ProductInfo = ({ product }: Props) => {
       toast({
         title: "Minimum Quantity",
         description: "You can't add less than 1 quantity.",
+        variant: "warning",
       });
     }
   };

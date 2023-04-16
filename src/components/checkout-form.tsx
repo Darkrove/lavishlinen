@@ -87,7 +87,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       setPayment({ status: "success" });
       toast({
         title: "Order Placed",
-        description: "Your order has been placed successfully",
+        description: "Your order has been placed successfully.",
         variant: "success",
       });
       handleRefreshCart();
@@ -139,7 +139,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         setPayment({ status: "success" });
         toast({
           title: "Order Placed",
-          description: "Your order has been placed successfully",
+          description: "Your order has been placed successfully.",
           variant: "success",
         });
         handleRefreshCart();

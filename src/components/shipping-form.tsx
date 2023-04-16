@@ -176,7 +176,7 @@ const ShippingForm = ({ stateId }: Props) => {
     ) {
       toast({
         title: "Error",
-        description: "Please fill in all fields",
+        description: "Please fill in all fields.",
         variant: "destructive",
       });
       return;
@@ -191,7 +191,7 @@ const ShippingForm = ({ stateId }: Props) => {
 
     toast({
       title: "Shipping Info Saved",
-      description: "Your shipping info has been saved",
+      description: "Your shipping info has been saved.",
       variant: "success",
     });
 
