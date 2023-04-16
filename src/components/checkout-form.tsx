@@ -20,7 +20,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import Paragraph from "./ui/paragraph";
 import { Separator } from "./ui/seperator";
-import Badge from "./ui/badge";
+import { useToast } from "@/hooks/ui/use-toast";
+import Badge from "@/ui/badge";
 
 interface Props {
   token: Token | null;
@@ -36,6 +37,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [order, setOrder] = useState<IncomingOrder>();
   const stripe = useStripe();
+  const { toast } = useToast();
   const { setCart } = useCartDispatch();
   const elements = useElements();
 
@@ -83,6 +85,10 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       console.log(incomingOrder);
       setOrder(incomingOrder);
       setPayment({ status: "success" });
+      toast({
+        title: "Order Placed",
+        description: "Your order has been placed successfully",
+      });
       handleRefreshCart();
     } catch (response) {
       console.warn(response);
@@ -93,6 +99,11 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         // Handle the error as usual because it's not related to 3D secure payments
         setPayment({ status: "error" });
         setErrorMessage((response as Response).message);
+        toast({
+          title: "Error",
+          description: (response as Response).message,
+          variant: "destructive"
+        });
         console.warn(response);
         return;
       }
@@ -125,6 +136,10 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         console.log(order);
         setOrder(order);
         setPayment({ status: "success" });
+        toast({
+          title: "Order Placed",
+          description: "Your order has been placed successfully",
+        });
         handleRefreshCart();
 
         return;

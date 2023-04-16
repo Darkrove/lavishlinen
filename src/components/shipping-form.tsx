@@ -160,13 +160,18 @@ const ShippingForm = ({ stateId }: Props) => {
     return state ? state.label : "";
   }
 
-  const onSubmit: SubmitHandler<FormData> = (data) =>
+  const onSubmit: SubmitHandler<FormData> = (data) => {
     setShippingData({
       ...data,
       shippingCountry,
       shippingSubdivision,
       shippingOption,
     });
+    toast({
+      title: "Shipping Info Saved",
+      description: "Your shipping info has been saved",
+    });
+  };
   console.log(shippingData);
 
   const handleSaveShippingInfo = () => {
