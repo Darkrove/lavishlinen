@@ -162,7 +162,15 @@ export interface ShippingData {
 }
 
 export interface Response {
-  statusCode: number;
+  status_code: number;
+  error: {
+    message: string;
+    type: string;
+    errors: {
+      country: string[];
+      region: string[];
+    };
+  };
   data: {
     error: {
       type: string;
