@@ -115,53 +115,7 @@ export interface Token {
 }
 
 export interface OrderData {
-  line_items: {
-    id: string;
-    product_id: string;
-    name: string;
-    product_name: string;
-    sku: string;
-    permalink: string;
-    quantity: number;
-    price: {
-      raw: number;
-      formatted: string;
-      formatted_with_symbol: string;
-      formatted_with_code: string;
-    };
-    line_total: {
-      raw: number;
-      formatted: string;
-      formatted_with_symbol: string;
-      formatted_with_code: string;
-    };
-    is_valid: boolean;
-    product_meta: never[];
-    selected_options: never[];
-    variant: null;
-    image: {
-      id: string;
-      url: string;
-      description: null;
-      is_image: boolean;
-      filename: string;
-      file_size: number;
-      file_extension: string;
-      image_dimensions: {
-        width: number;
-        height: number;
-      };
-      meta: never[];
-      created_at: number;
-      updated_at: number;
-    };
-    tax: {
-      is_taxable: boolean;
-      taxable_amount: number | null;
-      amount: number | null;
-      breakdown: null;
-    };
-  }[];
+  line_items: {};
   customer: {
     firstname: string;
     lastname: string;
@@ -182,14 +136,38 @@ export interface OrderData {
     name: string;
     street: string;
     town_city: string;
-    county_stat: string;
+    county_state: string;
     postal_zip_code: string;
     country: string;
   };
-  payment: {
+  payment?: {
     gateway: string;
     stripe: {
       payment_method_id: string;
+      payment_intent_id?: string;
     };
   };
+}
+
+export interface ShippingData {
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Address: string;
+  City: string;
+  Pin: string;
+  shippingCountry: string;
+  shippingSubdivision: string;
+  shippingOption: string;
+}
+
+export interface Response {
+  statusCode: number;
+  data: {
+    error: {
+      type: string;
+      param: string;
+    };
+  };
+  message: string;
 }

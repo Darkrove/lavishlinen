@@ -9,6 +9,7 @@ import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { useCartDispatch, useCartState } from "@/store/cart";
 import { useToast } from "@/hooks/ui/use-toast";
+import CheckoutForm from "@/components/checkout-form";
 import {
   Select,
   SelectContent,
@@ -18,12 +19,13 @@ import {
 } from "@/components/ui/select";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import {
-  Elements,
   CardElement,
-  ElementsConsumer,
+  Elements,
+  useStripe,
+  useElements,
 } from "@stripe/react-stripe-js";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Token, OrderData } from "@/types/checkout";
+import { Token, OrderData, ShippingData } from "@/types/checkout";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY!
@@ -65,7 +67,7 @@ const ShippingForm = ({ stateId }: Props) => {
   const [shippingOption, setShippingOption] = useState("");
   const [state, setState] = useState("account");
   const [shippingInfoSaved, setShippingInfoSaved] = useState(false);
-  const [shippingData, setShippingData] = useState({});
+  const [shippingData, setShippingData] = useState<ShippingData>({} as any);
   const [order, setOrder] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -148,73 +150,6 @@ const ShippingForm = ({ stateId }: Props) => {
     setShippingOption(options[0].id);
   };
 
-  const handleRefreshCart = async () => {
-    const newCart = await client.cart.refresh();
-    console.log(newCart);
-    setCart(newCart);
-  };
-
-  const handleCaptureCheckout = async (
-    checkoutTokenId: string,
-    orderData: OrderData,
-    stripe: Stripe,
-    data: OrderData
-  ) => {
-    try {
-      console.log(orderData);
-      setIsLoading(true);
-      const incomingOrder = await client.checkout.capture(
-        checkoutTokenId,
-        orderData
-      );
-      console.log(incomingOrder);
-      setOrder(incomingOrder);
-      handleRefreshCart();
-    } catch (response) {
-      console.log(response);
-      if (
-        (response as Response).statusCode !== 402 ||
-        (response as Response).data.error.type !== "requires_verification"
-      ) {
-        // Handle the error as usual because it's not related to 3D secure payments
-        console.log(response);
-        return;
-      }
-      const cardActionResult = await stripe.handleCardAction(
-        (response as Response).data.error.param
-      );
-
-      if (cardActionResult.error) {
-        // The customer failed to authenticate themselves with their bank and the transaction has been declined
-        alert(cardActionResult.error.message);
-        return;
-      }
-      try {
-        const order = await client.checkout.capture(checkoutTokenId, {
-          ...data,
-          payment: {
-            gateway: "stripe",
-            stripe: {
-              payment_intent_id: cardActionResult.paymentIntent.id,
-            },
-          },
-        });
-
-        // If we get here the order has been captured successfully and the order detail is available in the order variable
-        console.log(order);
-        setOrder(order);
-        handleRefreshCart();
-        return;
-      } catch (response) {
-        // Just like above, we get here if the order failed to capture with Commrece.js
-        console.log(response);
-        alert((response as Response).message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   type Array = {
     id: string;
     label: string;
@@ -234,67 +169,17 @@ const ShippingForm = ({ stateId }: Props) => {
     });
   console.log(shippingData);
 
-  const handlePayment = async (
-    e: React.FormEvent<HTMLFormElement>,
-    elements: typeof Elements,
-    stripe: Stripe
-  ) => {
-    e.preventDefault();
-    if (!stripe || !elements) return;
-    const cardElment = elements.getElement(CardElement);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: cardElment,
-    });
-    const cardToken = await stripe.createToken(cardElment);
-    if (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        status: "error",
-      });
-    } else {
-      const data = {
-        line_items: token?.line_items,
-        customer: {
-          firstname: shippingData.Firstname,
-          lastname: shippingData.Lastname,
-          email: shippingData.Email,
-        },
-        shipping: {
-          name: shippingData.Firstname + " " + shippingData.Lastname,
-          street: shippingData.Address,
-          town_city: shippingData.City,
-          county_state: shippingData.shippingSubdivision,
-          postal_zip_code: shippingData.Pin,
-          country: shippingData.shippingCountry,
-        },
-        fulfillment: { shipping_method: shippingData.shippingOption },
-        billing: {
-          name: shippingData.Firstname + " " + shippingData.Lastname,
-          street: shippingData.Address,
-          town_city: shippingData.City,
-          county_state: shippingData.shippingSubdivision,
-          postal_zip_code: shippingData.Pin,
-          country: shippingData.shippingCountry,
-        },
-      };
-      const orderData = {
-        ...data,
-        payment: {
-          gateway: "stripe",
-          stripe: {
-            payment_method_id: paymentMethod?.id,
-          },
-        },
-      };
-      handleCaptureCheckout(tokenId, orderData, stripe, data);
-    }
-  };
-
   const handleSaveShippingInfo = () => {
     setShippingInfoSaved(true);
     setState("payment");
+  };
+
+  const handleNext = () => {
+    setState("payment");
+  };
+
+  const handleBack = () => {
+    setState("account");
   };
 
   // UseEffects
@@ -501,7 +386,7 @@ const ShippingForm = ({ stateId }: Props) => {
               <input type="submit" />
             </Button>
 
-            <Button onClick={handleSaveShippingInfo}>
+            <Button onClick={handleNext}>
               <span>Next</span>
               <Icons.arrowRight className="w-4 h-4 ml-2" />
             </Button>
@@ -513,57 +398,14 @@ const ShippingForm = ({ stateId }: Props) => {
           Enter your payment information below.
         </p>
         <div className="grid gap-2 py-4">
-          {/* <div className="space-y-1">
-            <Label htmlFor="cardNumber">Card Number *</Label>
-            <Input id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="expirationDate">Expiration Date *</Label>
-            <Input id="expirationDate" placeholder="MM/YY" />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="cvv">CVV *</Label>
-            <Input id="cvv" type="password" placeholder="XXX" />
-          </div> */}
           <div className="space-y-1">
             <Elements stripe={stripePromise}>
-              <ElementsConsumer>
-                {({ elements, stripe }) => (
-                  <form
-                    onSubmit={(e) =>
-                      handlePayment(
-                        e,
-                        elements as StripeElements,
-                        stripe as Stripe
-                      )
-                    }
-                  >
-                    <CardElement />
-                    <div className="mt-4 flex justify-between">
-                      <Button
-                        onClick={() => setState("account")}
-                        variant="outline"
-                      >
-                        <Icons.arrowLeft className="w-4 h-4 mr-2" />{" "}
-                        <span>Back</span>
-                      </Button>
-
-                      <Button
-                        isLoading={isLoading}
-                        type="submit"
-                        disabled={!stripe}
-                      >
-                        <span>
-                          Pay{" "}
-                          {tokenId && token && token?.total
-                            ? token?.total?.formatted_with_symbol
-                            : ""}
-                        </span>
-                      </Button>
-                    </div>
-                  </form>
-                )}
-              </ElementsConsumer>
+              <CheckoutForm
+                token={token}
+                tokenId={tokenId}
+                shippingData={shippingData}
+                handleBack={handleBack}
+              />
             </Elements>
           </div>
         </div>
