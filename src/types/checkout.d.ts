@@ -176,6 +176,7 @@ export interface Response {
     error: {
       type: string;
       param: string;
+      message: string;
     };
   };
   message: string;
