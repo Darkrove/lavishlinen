@@ -118,7 +118,14 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
 
       if (cardActionResult.error) {
         // The customer failed to authenticate themselves with their bank and the transaction has been declined
-        alert(cardActionResult.error.message);
+        setPayment({ status: "error" });
+        setErrorMessage((response as Response).error.message);
+        toast({
+          title: "Error",
+          description: (response as Response).error.message,
+          variant: "destructive",
+        });
+        console.warn(response);
         return;
       }
 
