@@ -92,20 +92,20 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       });
       handleRefreshCart();
     } catch (response) {
-      console.warn(response);
+      console.log(response);
       if (
         (response as Response).statusCode !== 402 ||
         (response as Response).data.error.type !== "requires_verification"
       ) {
         // Handle the error as usual because it's not related to 3D secure payments
         setPayment({ status: "error" });
-        setErrorMessage((response as Response).error.message);
+        console.log(response);
+        setErrorMessage((response as Response).data.error.message);
         toast({
           title: "Error",
-          description: (response as Response).error.message,
+          description: (response as Response).data.error.message,
           variant: "destructive",
         });
-        console.warn(response);
         return;
       }
       if (!stripe) {
@@ -119,13 +119,13 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       if (cardActionResult.error) {
         // The customer failed to authenticate themselves with their bank and the transaction has been declined
         setPayment({ status: "error" });
-        setErrorMessage((response as Response).error.message);
+        console.log(response);
+        setErrorMessage((response as Response).data.error.message);
         toast({
           title: "Error",
-          description: (response as Response).error.message,
+          description: (response as Response).data.error.message,
           variant: "destructive",
         });
-        console.warn(response);
         return;
       }
 
@@ -155,13 +155,15 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       } catch (response) {
         // Just like above, we get here if the order failed to capture with Commrece.js
         setPayment({ status: "error" });
-        setErrorMessage((response as Response).error.message);
+        console.log(response);
+        setErrorMessage((response as Response).data.error.message);
         toast({
           title: "Error",
-          description: (response as Response).error.message,
+          description: (response as Response).data.error.message,
           variant: "destructive",
         });
-        console.warn(response);
+      } finally {
+        setIsLoading(false);
       }
     } finally {
       setIsLoading(false);
