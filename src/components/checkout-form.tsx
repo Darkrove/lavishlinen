@@ -147,8 +147,14 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         return;
       } catch (response) {
         // Just like above, we get here if the order failed to capture with Commrece.js
+        setPayment({ status: "error" });
+        setErrorMessage((response as Response).error.message);
+        toast({
+          title: "Error",
+          description: (response as Response).error.message,
+          variant: "destructive",
+        });
         console.warn(response);
-        alert((response as Response).message);
       }
     } finally {
       setIsLoading(false);
