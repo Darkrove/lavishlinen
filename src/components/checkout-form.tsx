@@ -120,10 +120,10 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         // The customer failed to authenticate themselves with their bank and the transaction has been declined
         setPayment({ status: "error" });
         console.log(response);
-        setErrorMessage((response as Response).data.error.message);
+        setErrorMessage((response as Response).error.message);
         toast({
           title: "Error",
-          description: (response as Response).data.error.message,
+          description: (response as Response).error.message,
           variant: "destructive",
         });
         return;
