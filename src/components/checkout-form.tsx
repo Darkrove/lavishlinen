@@ -100,10 +100,10 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         // Handle the error as usual because it's not related to 3D secure payments
         setPayment({ status: "error" });
         console.log(response);
-        setErrorMessage((response as Response).data.error.message);
+        setErrorMessage((response as Response).error.message);
         toast({
           title: "Error",
-          description: (response as Response).data.error.message,
+          description: (response as Response).error.message,
           variant: "destructive",
         });
         return;
