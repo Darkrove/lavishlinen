@@ -297,7 +297,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
 
         {payment.status === "success" && (
           <Link href="/categories/all">
-            <Button className="w-full bg-violet-100 mg">
+            <Button className="w-full bg-violet-500 mg">
               <span>Continue Shopping</span>
               <Icons.shoppingCart className="w-4 h-4 ml-2" />
             </Button>
