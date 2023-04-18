@@ -100,10 +100,13 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         // Handle the error as usual because it's not related to 3D secure payments
         setPayment({ status: "error" });
         console.log(response);
-        setErrorMessage((response as Response).error.message);
+        const errorMessage =
+          (response as Response).data?.error?.message ||
+          "Something went wrong. Please try again later.";
+        setErrorMessage(errorMessage);
         toast({
           title: "Error",
-          description: (response as Response).error.message,
+          description: errorMessage,
           variant: "destructive",
         });
         return;
@@ -120,10 +123,12 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         // The customer failed to authenticate themselves with their bank and the transaction has been declined
         setPayment({ status: "error" });
         console.log(response);
-        setErrorMessage((response as Response).error.message);
+        const errorMessage =
+          cardActionResult.error?.message || "Transaction declined.";
+        setErrorMessage(errorMessage);
         toast({
           title: "Error",
-          description: (response as Response).error.message,
+          description: errorMessage,
           variant: "destructive",
         });
         return;
