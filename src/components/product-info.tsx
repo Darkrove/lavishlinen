@@ -16,32 +16,18 @@ import {
 import { useCartDispatch } from "@/store/cart";
 import client from "@/lib/commerce";
 import { useToast } from "@/hooks/ui/use-toast";
-
-interface Product {
-  sku: string;
-  id: string;
-  name: string;
-  description: string;
-  price: {
-    formatted_with_symbol: string;
-  };
-  inventory: {
-    available: number;
-  };
-  assets: {
-    url: string;
-  }[];
-}
-
+import { Product, Variant } from "@/types/product";
 interface Props {
   product: Product;
+  variants: Variant;
 }
 
-const ProductInfo = ({ product }: Props) => {
+const ProductInfo = ({ product, variants }: Props) => {
   const { setCart } = useCartDispatch();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [variantId, setVariantId] = useState<string | null>(null);
   const addToCart = async (productId: string) => {
     if (product.inventory.available < 1) {
       toast({
@@ -136,27 +122,34 @@ const ProductInfo = ({ product }: Props) => {
         Tax included. Shipping calculated at checkout.
       </Paragraph>
       <InventoryStatus available={product.inventory.available} />
-      <Paragraph className="font-bold">Quantity</Paragraph>
+      <Paragraph className="font-bold">Select Quantity</Paragraph>
       <Quantity
         quantity={quantity}
         plusClickAction={handlePlusClick}
         minusClickAction={handleMinusClick}
       />
-      <Paragraph className="font-bold">Size</Paragraph>
-      <div className="flex flex-row space-x-2">
-        <Button variant="outline" className="w-10 h-10">
-          S
-        </Button>
-        <Button variant="outline" className="w-10 h-10">
-          M
-        </Button>
-        <Button variant="outline" className="w-10 h-10">
-          L
-        </Button>
-        <Button variant="outline" className="w-10 h-10">
-          XL
-        </Button>
-      </div>
+
+      {variants?.data?.length > 0 ? (
+        <>
+          <Paragraph className="font-bold">Select Size</Paragraph>
+          <div className="flex flex-row space-x-2">
+            {variants.data.map((variant) => (
+              <Button
+                key={variant.id}
+                variant="outline"
+                className={`${
+                  variantId === variant.id ? "bg-stone-200" : null
+                } "w-10 h-10"`}
+                onClick={() => setVariantId(variant.id)}
+                disabled={variant.inventory > 1 ? false : true}
+              >
+                {variant.description}
+              </Button>
+            ))}
+          </div>
+        </>
+      ) : null}
+
       <div className="my-3 flex flex-col space-y-3">
         <Button
           className="w-full rounded-lg"
