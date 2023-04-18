@@ -273,14 +273,14 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
           </Button>
         </div>
         {payment.status !== "initial" && (
-          <div className="bg-rose-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
+          <div className="bg-red-100 rounded-lg p-4 text-red-800 flex flex-col justify-center items-center">
             <PaymentStatus status={payment.status} />
           </div>
         )}
 
         {payment.status === "success" && order && order?.id && (
-          <div className="bg-green-500 rounded-lg p-4 text-white flex flex-col justify-center items-center">
-            <Paragraph className="text-white text-center">
+          <div className="bg-green-100 rounded-lg p-4 text-green-800 flex flex-col justify-center items-center">
+            <Paragraph className="text-green-800 text-center">
               Thank you for your purchase,{" "}
               <span className="font-bold uppercase">
                 {shippingData.Firstname}
@@ -288,7 +288,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
               ! We have sent you an email with the order details.
             </Paragraph>
             <Separator className="my-2" />
-            <Paragraph className="text-white text-center">
+            <Paragraph className="text-green-800 text-center">
               Your order id is{" "}
               <span className="font-bold uppercase">{order?.id}</span>
             </Paragraph>
@@ -297,7 +297,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
 
         {payment.status === "success" && (
           <Link href="/categories/all">
-            <Button className="w-full bg-violet-500 mg">
+            <Button className="w-full bg-violet-100 mg">
               <span>Continue Shopping</span>
               <Icons.shoppingCart className="w-4 h-4 ml-2" />
             </Button>
@@ -305,7 +305,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         )}
         {payment.status === "error" && (
           <>
-            <Paragraph className="text-red-500 text-center">
+            <Paragraph className="text-red-800 text-center">
               Having trouble with payment? Please contact us.
             </Paragraph>
             <Button className="bg-green-500 w-full">
