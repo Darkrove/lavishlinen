@@ -137,9 +137,12 @@ const ProductInfo = ({ product, variants }: Props) => {
               <Button
                 key={variant.id}
                 variant="outline"
-                className={`${
-                  variantId === variant.id ? "bg-stone-200" : null
-                } "w-10 h-10"`}
+                // className={`${
+                //   variantId === variant.id ? "bg-stone-200" : null
+                // } "w-10 h-10"`}
+                className={`border rounded-md text-center py-3 font-medium  ${
+                  variantId === variant.id ? "border-black " : ""
+                }`}
                 onClick={() => setVariantId(variant.id)}
                 disabled={variant.inventory > 1 ? false : true}
               >
