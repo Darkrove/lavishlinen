@@ -39,7 +39,12 @@ const CartItem = ({ item, onUpdateCart }: CartItemProps) => {
         </div>
         <div className="w-full flex flex-col ">
           <div className="flex flex-col md:flex-row justify-between">
-            <Paragraph className="font-semibold">{item.name}</Paragraph>
+            <Paragraph className="font-semibold">
+              {item.name}{" "}
+              {item.selected_options[0] ? (
+                <> ({item.selected_options[0].option_name})</>
+              ) : null}{" "}
+            </Paragraph>
             <Paragraph className="text-gray-500">
               MRP : {item.price.formatted_with_symbol}
             </Paragraph>

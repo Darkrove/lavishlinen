@@ -28,7 +28,7 @@ const ProductInfo = ({ product, variants }: Props) => {
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [variantId, setVariantId] = useState<string | null>(null);
-  const addToCart = async (productId: string) => {
+  const addToCart = async (productId: string, variantId?: string | null) => {
     if (product.inventory.available < 1) {
       toast({
         title: "Out of Stock",
@@ -36,8 +36,9 @@ const ProductInfo = ({ product, variants }: Props) => {
         variant: "warning",
       });
     } else {
+      console.log(productId, quantity, variantId);
       setLoading(true);
-      const cart = await client.cart.add(productId, quantity);
+      const cart = await client.cart.add(productId, quantity, variantId);
       setCart(cart);
       setLoading(false);
       toast({
@@ -156,7 +157,7 @@ const ProductInfo = ({ product, variants }: Props) => {
       <div className="my-3 flex flex-col space-y-3">
         <Button
           className="w-full rounded-lg"
-          onClick={() => addToCart(product.id)}
+          onClick={() => addToCart(product.id, variantId)}
           isLoading={loading}
         >
           Add To Cart

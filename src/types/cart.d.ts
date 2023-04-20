@@ -61,16 +61,62 @@ export interface Item {
   permalink: string;
   quantity: number;
   price: {
+    raw: number;
+    formatted: string;
     formatted_with_symbol: string;
+    formatted_with_code: string;
   };
   line_total: {
+    raw: number;
+    formatted: string;
     formatted_with_symbol: string;
+    formatted_with_code: string;
   };
-  variant: null;
+  is_valid: boolean;
+  product_meta: any[];
+  selected_options: {
+    group_id: string;
+    group_name: string;
+    option_id: string;
+    option_name: string;
+    price: {
+      raw: number;
+      formatted: string;
+      formatted_with_symbol: string;
+      formatted_with_code: string;
+    };
+  }[];
+  variant: {
+    id: string;
+    sku: string | null;
+    description: string;
+    inventory: number;
+    price: number | null;
+    is_valid: boolean;
+    invalid_reason_code: string | null;
+    meta: any | null;
+    created: number;
+    updated: number;
+    options: {
+      [key: string]: string;
+    };
+    assets: any[];
+  } | null;
   image: {
     id: string;
     url: string;
+    description: string | null;
+    is_image: boolean;
     filename: string;
+    file_size: number;
+    file_extension: string;
+    image_dimensions: {
+      width: number;
+      height: number;
+    };
+    meta: any[];
+    created_at: number;
+    updated_at: number;
   };
-  tax: null;
+  tax: any | null;
 }
