@@ -62,6 +62,10 @@ const ProductInfo = ({ product, variants }: Props) => {
       });
     }
   };
+  const inventorySize = variants?.data?.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.inventory,
+    0
+  );
   return (
     <div className="md:px-10">
       <div className="flex flex-row justify-between items-center ">
@@ -122,7 +126,12 @@ const ProductInfo = ({ product, variants }: Props) => {
       <Paragraph size="xs">
         Tax included. Shipping calculated at checkout.
       </Paragraph>
-      <InventoryStatus available={product.inventory.available} />
+
+      {variants?.data?.length > 0 ? (
+        <InventoryStatus available={inventorySize} />
+      ) : (
+        <InventoryStatus available={product.inventory.available} />
+      )}
       <Paragraph className="font-bold">Select Quantity</Paragraph>
       <Quantity
         quantity={quantity}

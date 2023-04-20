@@ -1,5 +1,8 @@
 import React from "react";
 import Image from "next/image";
+import { Separator } from "@/ui/seperator";
+import ProductList from "@/components/product-list";
+import LargeHeading from "@/components/ui/large-heading";
 import client from "@/lib/commerce";
 import ProductInfo from "@/components/product-info";
 import ProductDetailsCarousel from "@/components/product-details-carousel";
@@ -19,18 +22,21 @@ const ProductPage = async ({
   const variants = await client.products.getVariants(product.id);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className=" max-h-[700px]">
-        {/* <Image
-          src={product.assets[0].url}
-          alt={product.name}
-          height={600}
-          width={600}
-          className="rounded-xl"
-        /> */}
-        <ProductDetailsCarousel images={product.assets} />
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className=" max-h-[700px]">
+          <ProductDetailsCarousel images={product.assets} />
+        </div>
+        <ProductInfo product={product} variants={variants} />
       </div>
-      <ProductInfo product={product} variants={variants} />
+      <div className="pt-5">
+        <Separator className="my-4" />
+        <LargeHeading size="sm">Similar products</LargeHeading>
+        <Separator className="my-4" />
+        <div>
+          <ProductList products={product.related_products} />
+        </div>
+      </div>
     </div>
   );
 };
