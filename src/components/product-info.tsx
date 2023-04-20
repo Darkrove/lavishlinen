@@ -145,7 +145,7 @@ const ProductInfo = ({ product, variants }: Props) => {
                   variantId === variant.id ? "border-black " : ""
                 }`}
                 onClick={() => setVariantId(variant.id)}
-                disabled={variant.inventory > 1 ? false : true}
+                disabled={variant.inventory > 0 ? false : true}
               >
                 {variant.description}
               </Button>
