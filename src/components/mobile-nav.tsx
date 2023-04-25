@@ -21,14 +21,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Badge from "./ui/badge";
 
 export function MobileNav() {
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
+          onClick={() => setIsOpen(!isOpen)}
           className="-ml-4 text-base hover:bg-transparent focus:ring-0  focus:ring-offset-0 md:hidden"
         >
-          <Icons.menu /> {/* <span className="font-bold">Menu</span> */}
+          {isOpen ? (
+            <Icons.x className="w-6 h-6" />
+          ) : (
+            <Icons.menu className="w-6 h-6" />
+          )}
+          {/* <span className="font-bold">Menu</span> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
