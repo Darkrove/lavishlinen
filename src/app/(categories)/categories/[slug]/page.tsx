@@ -1,114 +1,108 @@
-import { FC } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import client from "@/lib/commerce";
 import LargeHeading from "@/ui/large-heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/ui/seperator";
 import ProductList from "@/components/product-list";
 import NoProduct from "@/components/no-product";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import CategoryFilter from "@/components/category-filter";
+import CategorySorter from "@/components/category-sorter";
+import { Product } from "@/types/product";
+import LoadingSkeleton from "@/components/loading-skeleton";
 
 interface CategoryPageProps {
   params: { slug: string };
   searchParams?: any;
 }
 
-const CategoryPage = async ({
-  params,
-  searchParams,
-}: CategoryPageProps): Promise<any> => {
-  if (params.slug === "all") {
-    const { data: products } = await client.products.list();
-    if (!products || products.length === 0) {
-      return <NoProduct />;
-    }
-    return (
-      <div>
-        <LargeHeading size="xs">All Products</LargeHeading>
-        <div className="pt-3 flex justify-between items-center">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Filter</Button>
-            </SheetTrigger>
-            <SheetContent position="right" size="lg">
-              <SheetHeader>
-                <SheetTitle>Filter Products</SheetTitle>
-                <SheetDescription>10 products</SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="featured">Featured</SelectItem>
-              <SelectItem value="best-selling">Best Selling</SelectItem>
-              <SelectItem value="a-z">A-Z</SelectItem>
-              <SelectItem value="z-a">Z-A</SelectItem>
-              <SelectItem value="low-high">Low to High</SelectItem>
-              <SelectItem value="high-low">Low to High</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <Separator className="my-4" />
-        <ProductList products={products} />
-      </div>
-    );
+const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
+  const [category, setCategory] = useState<any>();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      if (params.slug === "all") {
+        const { data } = await client.products.list();
+        setProducts(data || []);
+      } else {
+        const { data } = await client.categories.retrieve(params.slug, {
+          type: "slug",
+        });
+        setCategory(data);
+        const { data: products } = await client.products.list({
+          category_slug: [params.slug],
+        });
+        setProducts(products || []);
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [params.slug]);
+
+  if (isLoading) {
+    return <LoadingSkeleton />;
   }
 
-  const category = await client.categories.retrieve(params.slug, {
-    type: "slug",
-  });
-
-  const { data: products } = await client.products.list({
-    category_slug: [params.slug],
-  });
-  if (!products || products.length === 0) {
+  if (products.length === 0) {
     return <NoProduct />;
   }
 
+  const applySorter = (filter: string) => {
+    let productData: Product[] = [];
+
+    // Make a copy of the original products array
+    const productsCopy = [...products];
+
+    switch (filter) {
+      case "featured":
+        productData = productsCopy;
+        return productData;
+      case "best-selling":
+        productData = productsCopy;
+        setProducts(productData);
+        return productData;
+      case "a-z":
+        productData = productsCopy.sort((a: any, b: any) =>
+          a.name.localeCompare(b.name)
+        );
+        setProducts(productData);
+        return productData;
+      case "z-a":
+        productData = productsCopy.sort((a: any, b: any) =>
+          b.name.localeCompare(a.name)
+        );
+        setProducts(productData);
+        return productData;
+      case "low-high":
+        productData = productsCopy.sort(
+          (a: any, b: any) => a.price.raw - b.price.raw
+        );
+        setProducts(productData);
+        return productData;
+      case "high-low":
+        productData = productsCopy.sort(
+          (a: any, b: any) => b.price.raw - a.price.raw
+        );
+        setProducts(productData);
+        return productData;
+      default:
+        return products;
+    }
+  };
+
   return (
     <div>
-      <LargeHeading size="xs">{category.name}</LargeHeading>
+      {category && <LargeHeading size="xs">{category.name}</LargeHeading>}
+      {!category && <LargeHeading size="xs">All Products</LargeHeading>}
       <div className="pt-3 flex justify-between items-center">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline">Filter</Button>
-          </SheetTrigger>
-          <SheetContent position="right" size="lg">
-            <SheetHeader>
-              <SheetTitle>Filter Products</SheetTitle>
-              <SheetDescription>10 products</SheetDescription>
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort By" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="featured">Featured</SelectItem>
-            <SelectItem value="best-selling">Best Selling</SelectItem>
-            <SelectItem value="a-z">A-Z</SelectItem>
-            <SelectItem value="z-a">Z-A</SelectItem>
-            <SelectItem value="low-high">Low to High</SelectItem>
-            <SelectItem value="high-low">Low to High</SelectItem>
-          </SelectContent>
-        </Select>
+        <CategoryFilter />
+        <CategorySorter onSortChange={applySorter} />
       </div>
       <Separator className="my-4" />
       <ProductList products={products} />

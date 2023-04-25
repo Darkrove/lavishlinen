@@ -3,15 +3,22 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  price: {
-    formatted_with_symbol: string;
-  };
   inventory: {
     available: number;
   };
   assets: {
     url: string;
   }[];
+  price: {
+    raw: number;
+    formatted: string;
+    formatted_with_symbol: string;
+    formatted_with_code: string;
+  };
+  image: {
+    url: string;
+  };
+  permalink: string;
 }
 
 export interface Variant {

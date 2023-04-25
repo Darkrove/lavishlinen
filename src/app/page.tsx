@@ -10,6 +10,7 @@ import Image from "next/image";
 
 export default async function Home() {
   const { data: products } = await client.products.list();
+  const sliceProducts = products.slice(0, 8);
   return (
     <div>
       <div className="h-screen max-h-[800px] w-full flex flex-col md:flex-row">
@@ -39,7 +40,7 @@ export default async function Home() {
         <Separator className="my-4" />
         <LargeHeading size="xs">Experience the Luxury</LargeHeading>
         <Separator className="my-4" />
-        <ProductList products={products} />
+        <ProductList products={sliceProducts} />
         <div className="flex w-full justify-center items-center mt-4">
           <Link href="/categories/all">
             <Button size="lg">View All</Button>

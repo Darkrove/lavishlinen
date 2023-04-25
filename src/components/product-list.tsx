@@ -3,24 +3,10 @@ import { FC } from "react";
 import LargeHeading from "@/ui/large-heading";
 import { Button } from "@/ui/button";
 import ProductCard from "@/ui/product-card";
+import { Product } from "@/types/product";
 
 interface ProductListProps {
   products: Product[];
-}
-
-interface Product {
-  id: string;
-  name: string;
-  price: {
-    raw: number;
-    formatted: string;
-    formatted_with_symbol: string;
-    formatted_with_code: string;
-  };
-  image: {
-    url: string;
-  };
-  permalink: string;
 }
 
 const ProductList: FC<ProductListProps> = ({ products }) => {
