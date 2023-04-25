@@ -29,7 +29,7 @@ const DeleteButton = ({ id }: Props) => {
       {isLoading ? (
         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
       ) : (
-        <Icons.trash2 className="w-4 h-4 mr-2" />
+        <Icons.trash className="text-white w-5 h-5 mr-2" />
       )}{" "}
       Delete
     </Button>
