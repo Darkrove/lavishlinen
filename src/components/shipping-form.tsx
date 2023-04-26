@@ -61,7 +61,7 @@ const ShippingForm = ({ stateId }: Props) => {
   const [token, setToken] = useState<Token | null>(null);
   const [tokenId, setTokenId] = useState("");
   const [shippingCountries, setShippingCountries] = useState([]);
-  const [shippingCountry, setShippingCountry] = useState("IND");
+  const [shippingCountry, setShippingCountry] = useState("");
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState("");
   const [shippingOptions, setShippingOptions] = useState([]);
