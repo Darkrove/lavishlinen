@@ -10,6 +10,7 @@ interface ProductListProps {
 }
 
 const ProductList: FC<ProductListProps> = ({ products }) => {
+  console.log(products);
   return (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between">
@@ -20,6 +21,7 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
             price={product.price.formatted_with_symbol}
             imageUrl={product.image.url}
             permalink={product.permalink}
+            createdAt={product.created}
             className="w-full"
           />
         ))}

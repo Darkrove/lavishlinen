@@ -2,6 +2,7 @@ export interface Product {
   sku: string;
   id: string;
   name: string;
+  created: number;
   description: string;
   inventory: {
     available: number;

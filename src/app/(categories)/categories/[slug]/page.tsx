@@ -25,7 +25,6 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
   const [categories, setCategories] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const bgColors = ["red", "green", "yellow", "cyan"];
   const imageUrls = [
     "/abstract-art-3.svg",
     "/abstract-art-4.svg",
@@ -106,11 +105,7 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
         return products;
     }
   };
-  const newColors = categories.map((item: any, index: number) => {
-    const valueIndex = index % bgColors.length;
-    return bgColors[valueIndex];
-  });
-  console.log(newColors);
+
   if (categories.length > 0 && params.slug === "list") {
     return (
       <div>
@@ -120,7 +115,9 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
               <div key={category.slug} className={`p-4 rounded-lg border`}>
                 <div className="flex h-full flex-col justify-between relative">
                   {isNew(category.created) && (
-                    <Badge className="absolute top-0 left-0">New</Badge>
+                    <Badge className="absolute top-0 left-0" size="sm">
+                      New
+                    </Badge>
                   )}
                   <div>
                     <Image

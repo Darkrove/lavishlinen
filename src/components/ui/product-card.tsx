@@ -6,12 +6,15 @@ import { Button } from "@/ui/button";
 import { Icons } from "@/components/icons";
 import Image from "next/image";
 import Badge from "@/ui/badge";
+import { isNew } from "@/lib/utils";
+
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   price: string;
   imageUrl: string;
   permalink: string;
   sale?: boolean;
+  createdAt: number;
   aspectRatio?: number;
 }
 
@@ -21,6 +24,7 @@ const ProductCard: FC<ProductCardProps> = ({
   imageUrl,
   permalink,
   sale,
+  createdAt,
   aspectRatio = 3 / 4,
   className,
   ...props
@@ -38,10 +42,10 @@ const ProductCard: FC<ProductCardProps> = ({
             fill
             className="object-cover transition-all hover:scale-105"
           />
-          {sale && (
+          {isNew(createdAt) && (
             <div className="absolute top-0 left-0 mt-2 ml-2">
-              <Badge variant="destructive" size="sm">
-                Sale
+              <Badge variant="info" size="sm">
+                New
               </Badge>
             </div>
           )}
