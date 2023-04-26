@@ -13,7 +13,8 @@ import { Product } from "@/types/product";
 import Paragraph from "@/ui/paragraph";
 import Image from "next/image";
 import LoadingSkeleton from "@/components/loading-skeleton";
-
+import { isNew } from "@/lib/utils";
+import Badge from "@/ui/badge";
 interface CategoryPageProps {
   params: { slug: string };
   searchParams?: any;
@@ -24,20 +25,7 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
   const [categories, setCategories] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const bgColors = [
-    "red",
-    "green",
-    "yellow",
-    "amber",
-    "pink",
-    "violet",
-    "indigo",
-    "orange",
-    "lime",
-    "cyan",
-    "sky",
-    "rose",
-  ];
+  const bgColors = ["red", "green", "yellow", "cyan"];
   const imageUrls = [
     "/abstract-art-3.svg",
     "/abstract-art-4.svg",
@@ -118,52 +106,49 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
         return products;
     }
   };
-
+  const newColors = categories.map((item: any, index: number) => {
+    const valueIndex = index % bgColors.length;
+    return bgColors[valueIndex];
+  });
+  console.log(newColors);
   if (categories.length > 0 && params.slug === "list") {
     return (
       <div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-          {categories.map((category: any, index: number) => (
-            <div
-              key={category.slug}
-              className={`p-4 rounded-lg  bg-${
-                bgColors[index % bgColors.length]
-              }-200`}
-            >
-              <div className="flex h-full flex-col justify-end ">
-                <Image
-                  src={imageUrls[index % imageUrls.length]}
-                  alt={category.name}
-                  width={300}
-                  height={300}
-                  layout="responsive"
-                  className="object-contain"
-                />
-                <LargeHeading
-                  size="sm"
-                  className={`text-${bgColors[index % bgColors.length]}-800`}
-                >
-                  {category.name}
-                </LargeHeading>
-                <Paragraph
-                  className={`line-clamp-2 text-${
-                    bgColors[index % bgColors.length]
-                  }-800`}
-                >
-                  {category.description}
-                </Paragraph>
-                <Link href={`/categories/${category.slug}`} className="w-full">
-                  <Button
-                    className={`mt-4 w-full bg-white hover:bg-gray-100 text-${
-                      bgColors[index % bgColors.length]
-                    }-800`}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {categories.map((category: any, index: number) => {
+            return (
+              <div key={category.slug} className={`p-4 rounded-lg border`}>
+                <div className="flex h-full flex-col justify-between relative">
+                  {isNew(category.created) && (
+                    <Badge className="absolute top-0 left-0">New</Badge>
+                  )}
+                  <div>
+                    <Image
+                      src={imageUrls[index % imageUrls.length]}
+                      alt={category.name}
+                      width={300}
+                      height={300}
+                      layout="responsive"
+                      className="object-contain"
+                    />
+                    <LargeHeading size="sm">{category.name}</LargeHeading>
+                    <Paragraph className="line-clamp-2">
+                      {category.description}
+                    </Paragraph>{" "}
+                  </div>
+
+                  <Link
+                    href={`/categories/${category.slug}`}
+                    className="w-full"
                   >
-                    View Products
-                  </Button>
-                </Link>
+                    <Button className={`mt-4 w-full bg-stone-900 text-white`}>
+                      View Products
+                    </Button>
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
