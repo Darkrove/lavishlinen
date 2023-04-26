@@ -73,7 +73,7 @@ const MobileNav = async () => {
                 }) => (
                   <DropdownMenuItem key={category.id} asChild>
                     <Link
-                      href={`/category/${category.slug}`}
+                      href={`/categories/${category.slug}`}
                       className="flex justify-between items-center"
                     >
                       <span>{category.name}</span>
