@@ -10,21 +10,21 @@ export const footerConfig = {
     },
     {
       title: "Track Order",
-      href: "/",
+      href: "/track-order",
     },
   ],
   ShopByCategory: [
     {
       title: "Full Sleeve",
-      href: "/category/full-sleeve-shirts",
+      href: "/categories/full-sleeve-shirts",
     },
     {
       title: "Half Sleeve",
-      href: "/category/half-sleeve-shirts",
+      href: "/categories/half-sleeve-shirts",
     },
     {
       title: "Linen Fabrics",
-      href: "/category/pure-linen-fabrics",
+      href: "/categories/pure-linen-fabric",
     },
   ],
   Social: [
