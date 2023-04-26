@@ -5,12 +5,7 @@ import Navbar from "@/components/main-nav";
 import Footer from "@/components/footer";
 import { CartProvider } from "@/store/cart";
 import { Toaster } from "@/components/ui/toaster";
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
+import { fontSans } from "@/lib/fonts";
 
 interface RootLayoutProps {
   children: React.ReactNode;
