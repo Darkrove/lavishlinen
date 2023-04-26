@@ -22,27 +22,6 @@ export const docsConfig: DocsConfig = {
   ],
   sidebarNav: [
     {
-      title: "Shop All",
-      items: [
-        {
-          title: "Full Sleeve Shirts",
-          href: "/categories/full-sleeve-shirts",
-          items: [],
-        },
-        {
-          title: "Pure Linen Fabric",
-          href: "/categories/pure-linen-fabric",
-          items: [],
-        },
-        {
-          title: "Half Sleeve Shirts",
-          href: "/categories/half-sleeve-shirts",
-          items: [],
-          label: "New",
-        },
-      ],
-    },
-    {
       title: "Social",
       items: [
         {

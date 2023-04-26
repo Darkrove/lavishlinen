@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { FC } from "react";
 import { Icons } from "@/components/icons";
-import { MobileNav } from "@/components/mobile-nav";
+import MobileNav from "@/components/mobile-nav";
 import { cva } from "class-variance-authority";
 import client from "@/lib/commerce";
 import SideNavigation from "@/components/side-navigation";
@@ -22,7 +22,8 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/ui/button";
 import { CategoryData } from "@/types/api";
 import { Url } from "next/dist/shared/lib/router/router";
-
+import { isNew } from "@/lib/utils";
+import Badge from "@/ui/badge";
 const components: { title: string; slug: string; description: string }[] = [
   {
     title: "Full Sleeve Shirts",
@@ -43,8 +44,14 @@ const components: { title: string; slug: string; description: string }[] = [
   },
 ];
 
-const Navbar = () => {
-  // const { data: categories } = await client.categories.list();
+const Navbar = async () => {
+  const { data: categories } = await client.categories.list();
+  const sort = () => {
+    return categories.sort((a: { name: string }, b: { name: string }) =>
+      a.name.localeCompare(b.name)
+    );
+  };
+  const newSortedCategories = sort().slice(0, 6);
   return (
     <header className="sticky top-0 z-40 w-full border-b border-b-stone-200 bg-white dark:border-b-stone-700 dark:bg-stone-900">
       <div className="h-16 px-5 md:px-10 container max-w-7xl mx-auto w-full flex justify-between items-center">
@@ -68,15 +75,22 @@ const Navbar = () => {
                 <NavigationMenuTrigger>Shop All</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {components.map((component) => (
-                      <ListItem
-                        key={component.slug}
-                        title={component.title}
-                        href={`/categories/${component.slug}`}
-                      >
-                        {component.description}
-                      </ListItem>
-                    ))}
+                    {newSortedCategories?.map(
+                      (component: {
+                        slug: string | null;
+                        name: string;
+                        description: string | null;
+                        created: number;
+                      }) => (
+                        <ListItem
+                          key={component.slug}
+                          title={component.name}
+                          href={`/categories/${component.slug}`}
+                        >
+                          {component.description}
+                        </ListItem>
+                      )
+                    )}
                   </ul>
                   <div className="p-4 pt-0">
                     <Separator className="mb-4" />
@@ -141,7 +155,12 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="text-sm font-medium leading-none">
+            {title}
+            {/* {isNew(created) && (
+            <Badge className="ml-2">New</Badge>
+          )} */}
+          </div>
           <p className="line-clamp-1 text-sm leading-snug text-stone-500 dark:text-stone-400">
             {children}
           </p>
