@@ -28,12 +28,15 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
     "red",
     "green",
     "yellow",
-    "purple",
+    "amber",
     "pink",
-    "gray",
     "violet",
     "indigo",
     "orange",
+    "lime",
+    "cyan",
+    "sky",
+    "rose",
   ];
   const imageUrls = [
     "/abstract-art-3.svg",
@@ -50,7 +53,11 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
         setProducts(data || []);
       } else if (params.slug === "list") {
         const { data } = await client.categories.list();
-        setCategories(data);
+        setCategories(
+          data.sort((a: { name: string }, b: { name: string }) =>
+            a.name.localeCompare(b.name)
+          )
+        );
         console.log(data);
       } else {
         const { data } = await client.categories.retrieve(params.slug, {
@@ -112,7 +119,7 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
     }
   };
 
-  if (categories.length > 0) {
+  if (categories.length > 0 && params.slug === "list") {
     return (
       <div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
