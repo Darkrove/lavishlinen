@@ -26,6 +26,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Token, OrderData, ShippingData } from "@/types/checkout";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY!
@@ -382,11 +383,13 @@ const ShippingForm = ({ stateId }: Props) => {
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  {subdivisions.map((subdivision) => (
-                    <SelectItem key={subdivision.id} value={subdivision.id}>
-                      {subdivision.label}
-                    </SelectItem>
-                  ))}
+                  <ScrollArea className="h-[400px]">
+                    {subdivisions.map((subdivision) => (
+                      <SelectItem key={subdivision.id} value={subdivision.id}>
+                        {subdivision.label}
+                      </SelectItem>
+                    ))}
+                  </ScrollArea>
                 </SelectContent>
               </Select>
             </div>
