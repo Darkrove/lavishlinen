@@ -97,8 +97,8 @@ const Navbar = async () => {
                     <Link href="/categories/list" passHref legacyBehavior>
                       <NavigationMenuLink
                         className={cn(
-                          buttonVariants({ variant: "outline" }),
-                          "w-full dark:hover:bg-slate-700"
+                          buttonVariants({ variant: "default" }),
+                          "w-full"
                         )}
                       >
                         Browse Categories
