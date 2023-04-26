@@ -82,7 +82,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         checkoutTokenId,
         orderData
       );
-      console.log(incomingOrder);
+
       setOrder(incomingOrder);
       setPayment({ status: "success" });
       toast({
@@ -92,14 +92,12 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       });
       handleRefreshCart();
     } catch (response) {
-      console.log(response);
       if (
         (response as Response).statusCode !== 402 ||
         (response as Response).data.error.type !== "requires_verification"
       ) {
         // Handle the error as usual because it's not related to 3D secure payments
         setPayment({ status: "error" });
-        console.log(response);
         const errorMessage =
           (response as Response).data?.error?.message ||
           "Something went wrong. Please try again later.";
@@ -122,7 +120,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       if (cardActionResult.error) {
         // The customer failed to authenticate themselves with their bank and the transaction has been declined
         setPayment({ status: "error" });
-        console.log(response);
+
         const errorMessage =
           cardActionResult.error?.message || "Transaction declined.";
         setErrorMessage(errorMessage);
@@ -146,7 +144,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
         });
 
         // If we get here the order has been captured successfully and the order detail is available in the order variable
-        console.log(order);
+
         setOrder(order);
         setPayment({ status: "success" });
         toast({
@@ -160,7 +158,7 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
       } catch (response) {
         // Just like above, we get here if the order failed to capture with Commrece.js
         setPayment({ status: "error" });
-        console.log(response);
+
         setErrorMessage((response as Response).data.error.message);
         toast({
           title: "Error",

@@ -23,7 +23,6 @@ function CartPage({}: PageProps) {
   }
 
   const cartItems: Item[] = state.line_items;
-  console.log(state);
 
   const handleClearCart = async () => {
     setIsEmptyCartLoading(true);

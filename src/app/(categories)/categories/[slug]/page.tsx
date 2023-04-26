@@ -45,7 +45,6 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
             a.name.localeCompare(b.name)
           )
         );
-        console.log(data);
       } else {
         const { data } = await client.categories.retrieve(params.slug, {
           type: "slug",

@@ -36,7 +36,6 @@ const ProductInfo = ({ product, variants }: Props) => {
         variant: "warning",
       });
     } else {
-      console.log(productId, quantity, variantId);
       setLoading(true);
       const cart = await client.cart.add(productId, quantity, variantId);
       setCart(cart);

@@ -115,7 +115,6 @@ const ShippingForm = ({ stateId }: Props) => {
 
       setToken(token);
       setTokenId(token.id);
-      console.log(token);
     } catch (error) {
       console.log(error);
     }
@@ -147,7 +146,6 @@ const ShippingForm = ({ stateId }: Props) => {
       region,
     });
     setShippingOptions(options);
-    console.warn(options);
     setShippingOption(options[0].id);
   };
 
@@ -198,7 +196,6 @@ const ShippingForm = ({ stateId }: Props) => {
 
     handleNext();
   };
-  console.log(shippingData);
 
   const handleSaveShippingInfo = () => {
     setShippingInfoSaved(true);
