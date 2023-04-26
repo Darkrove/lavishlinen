@@ -115,7 +115,7 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
   if (categories.length > 0) {
     return (
       <div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
           {categories.map((category: any, index: number) => (
             <div
               key={category.slug}
@@ -139,7 +139,7 @@ const CategoryPage = ({ params }: CategoryPageProps): JSX.Element => {
                   {category.name}
                 </LargeHeading>
                 <Paragraph
-                  className={`line-clamp-1 text-${
+                  className={`line-clamp-2 text-${
                     bgColors[index % bgColors.length]
                   }-800`}
                 >
