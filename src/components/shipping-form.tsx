@@ -354,7 +354,9 @@ const ShippingForm = ({ stateId }: Props) => {
               >
                 <SelectTrigger>
                   <SelectValue aria-label={shippingCountry}>
-                    {getStateLabel(countries, shippingCountry)}
+                    {shippingCountry
+                      ? getStateLabel(countries, shippingCountry)
+                      : "Select a country"}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -374,7 +376,9 @@ const ShippingForm = ({ stateId }: Props) => {
               >
                 <SelectTrigger>
                   <SelectValue aria-label={shippingSubdivision}>
-                    {getStateLabel(subdivisions, shippingSubdivision)}
+                    {shippingSubdivision
+                      ? getStateLabel(subdivisions, shippingSubdivision)
+                      : "Select a state"}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -391,7 +395,9 @@ const ShippingForm = ({ stateId }: Props) => {
               <Select value={shippingOption} onValueChange={setShippingOption}>
                 <SelectTrigger>
                   <SelectValue aria-label={shippingOption}>
-                    {getStateLabel(options, shippingOption)}
+                    {shippingOption
+                      ? getStateLabel(options, shippingOption)
+                      : "Select a shipping option"}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>

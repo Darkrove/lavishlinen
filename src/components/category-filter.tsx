@@ -24,7 +24,7 @@ const CategoryFilter = (): JSX.Element => {
           Filter
         </Button>
       </SheetTrigger>
-      <SheetContent position="right" size="lg">
+      <SheetContent position="bottom" size="lg">
         <SheetHeader>
           <SheetTitle>Filter Products</SheetTitle>
           <SheetDescription>10 products</SheetDescription>
