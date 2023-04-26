@@ -115,7 +115,7 @@ const Navbar = async () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className="hidden lg:flex">
-                <Link href={siteConfig.links.github} legacyBehavior passHref>
+                <Link href="/track-order" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Track Order
                   </NavigationMenuLink>
