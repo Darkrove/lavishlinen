@@ -1,18 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { siteConfig } from "@/config/site";
 import Link from "next/link";
-import { FC } from "react";
+
 import { Icons } from "@/components/icons";
-import { MobileNav } from "@/components/mobile-nav";
-import client from "@/lib/commerce";
+
 import { useCartState } from "@/store/cart";
 import { Button, buttonVariants } from "@/ui/button";
-import { CategoryData } from "@/types/api";
-import { Url } from "next/dist/shared/lib/router/router";
-
-interface Props {}
 
 const SideNavigation = () => {
   const { total_unique_items } = useCartState();
