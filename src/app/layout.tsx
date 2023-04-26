@@ -34,6 +34,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <CartProvider>
             <div className="flex min-h-screen flex-col">
+              {/* @ts-expect-error Server Component */}
               <Navbar />
               <div>{children}</div>
               <Footer />

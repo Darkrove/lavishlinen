@@ -126,6 +126,7 @@ const Navbar = async () => {
         </div>
 
         <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
+          {/* @ts-expect-error Server Component */}
           <MobileNav />
           <SideNavigation />
         </div>

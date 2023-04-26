@@ -19,9 +19,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Badge from "@/ui/badge";
 import { isNew } from "@/lib/utils";
-interface Props {}
 
-const MobileNav = async ({}: Props) => {
+const MobileNav = async () => {
   const { data: categories } = await client.categories.list();
   const sort = () => {
     return categories.sort((a: { name: string }, b: { name: string }) =>
