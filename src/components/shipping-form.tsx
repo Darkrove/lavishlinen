@@ -27,6 +27,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Token, OrderData, ShippingData } from "@/types/checkout";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import OrderSummary from "@/components/order-summary";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY!
@@ -70,6 +71,9 @@ const ShippingForm = ({ stateId }: Props) => {
   const [shippingInfoSaved, setShippingInfoSaved] = useState(false);
   const [shippingData, setShippingData] = useState<ShippingData>({} as any);
   const [order, setOrder] = useState({});
+  const [subTotal, setSubTotal] = useState("");
+  const [shipping, setShipping] = useState("");
+  const [total, setTotal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { toast } = useToast();
@@ -103,7 +107,7 @@ const ShippingForm = ({ stateId }: Props) => {
 
   const options = shippingOptions.map((so: optionType) => ({
     id: so.id,
-    label: `${so.description} - (${so.price.formatted_with_symbol})`,
+    label: `${so.description} - ${so.price.formatted_with_symbol}`,
   }));
 
   // Functions
@@ -147,6 +151,24 @@ const ShippingForm = ({ stateId }: Props) => {
     });
     setShippingOptions(options);
     setShippingOption(options[0].id);
+  };
+
+  const fetchShippingData = async (
+    checkoutTokenId: string,
+    shippingOption: string,
+    country: string,
+    region: string
+  ) => {
+    const data = await client.checkout.checkShippingOption(checkoutTokenId, {
+      shipping_option_id: shippingOption,
+      country: country,
+      region: region,
+    });
+    console.log(data);
+
+    setSubTotal(data?.subtotal?.formatted_with_symbol);
+    setShipping(data?.shipping?.price?.formatted_with_symbol);
+    setTotal(data?.total?.formatted_with_symbol);
   };
 
   type Array = {
@@ -231,6 +253,16 @@ const ShippingForm = ({ stateId }: Props) => {
     if (shippingSubdivision)
       fetchShippingOptions(tokenId, shippingCountry, shippingSubdivision);
   }, [tokenId, shippingCountry, shippingSubdivision]);
+
+  useEffect(() => {
+    if (shippingOption)
+      fetchShippingData(
+        tokenId,
+        shippingOption,
+        shippingCountry,
+        shippingSubdivision
+      );
+  }, [tokenId, shippingOption, shippingCountry, shippingSubdivision]);
 
   return (
     <Tabs defaultValue="account" value={state} className="max-w-2xl w-full">
@@ -430,6 +462,14 @@ const ShippingForm = ({ stateId }: Props) => {
         </form>
       </TabsContent>
       <TabsContent value="payment">
+        {token && (
+          <OrderSummary
+            token={token}
+            subTotal={subTotal}
+            shipping={shipping}
+            total={total}
+          />
+        )}
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Enter your card information below.
         </p>

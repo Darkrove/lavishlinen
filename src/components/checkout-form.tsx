@@ -18,8 +18,8 @@ import client from "@/lib/commerce";
 import { useCartDispatch, useCartState } from "@/store/cart";
 import clsx from "clsx";
 import Link from "next/link";
-import Paragraph from "./ui/paragraph";
-import { Separator } from "./ui/seperator";
+import Paragraph from "@/ui/paragraph";
+import { Separator } from "@/ui/seperator";
 import { useToast } from "@/hooks/ui/use-toast";
 import Badge from "@/ui/badge";
 
@@ -263,10 +263,10 @@ const CheckoutForm = ({ token, tokenId, shippingData, handleBack }: Props) => {
             })}
           >
             <span>
-              Pay{" "}
-              {tokenId && token && token?.total
+              Pay
+              {/* {tokenId && token && token?.total
                 ? token?.total?.formatted_with_symbol
-                : ""}
+                : ""} */}
             </span>
           </Button>
         </div>
