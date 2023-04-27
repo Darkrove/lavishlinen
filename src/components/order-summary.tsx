@@ -1,6 +1,6 @@
 import React from "react";
 import { Separator } from "./ui/seperator";
-import { Token } from "@/types/checkout";
+import { Token, ItemSelectedOption } from "@/types/checkout";
 
 interface Props {
   token: Token | null;
@@ -10,6 +10,7 @@ interface Props {
 }
 
 const OrderSummary = ({ token, subTotal, shipping, total }: Props) => {
+  console.log(token);
   return (
     <div>
       <p className="text-sm text-slate-500 dark:text-slate-400 pb-2">
@@ -28,12 +29,12 @@ const OrderSummary = ({ token, subTotal, shipping, total }: Props) => {
               </span>
             </div>
             <span className="text-sm text-stone-500 dark:text-stone-400">
-              {item.selected_options.map((option) => (
+              {item.selected_options.map((option: ItemSelectedOption) => (
                 <p
-                  key={option?.group_id}
+                  key={option.group_id}
                   className="font-color-light font-weight-small"
                 >
-                  {option?.group_name}: {option?.option_name}
+                  {option.group_name}: {option.option_name}
                 </p>
               ))}
             </span>

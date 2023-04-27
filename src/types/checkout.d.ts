@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 export interface Token {
   id: string;
   cart_id: string;
@@ -252,4 +253,16 @@ export interface IncomingOrder {
       breakdown: any[];
     };
   }[];
+}
+export interface ItemSelectedOption {
+  group_id: string;
+  group_name: string;
+  option_id: string;
+  option_name: number;
+  price: {
+    raw: number;
+    formatted: string;
+    formatted_with_symbol: string;
+    formatted_with_code: string;
+  };
 }
