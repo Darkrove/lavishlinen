@@ -30,10 +30,10 @@ const OrderSummary = ({ token, subTotal, shipping, total }: Props) => {
             <span className="text-sm text-stone-500 dark:text-stone-400">
               {item.selected_options.map((option) => (
                 <p
-                  key={option.group_id}
+                  key={option?.group_id}
                   className="font-color-light font-weight-small"
                 >
-                  {option.group_name}: {option.option_name}
+                  {option?.group_name}: {option?.option_name}
                 </p>
               ))}
             </span>
