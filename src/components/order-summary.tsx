@@ -6,7 +6,7 @@ interface Props {
   token: Token | null;
   subTotal: string;
   shipping: string;
-  total: shipping;
+  total: string;
 }
 
 const OrderSummary = ({ token, subTotal, shipping, total }: Props) => {
